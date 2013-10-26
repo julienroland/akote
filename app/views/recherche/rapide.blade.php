@@ -11,7 +11,7 @@
 
 	<p>{{('Localiser : Une école, une ville, un kot')}}</p>
 
-	{{ Form::open(array('rapide' => 'recherche/rapide' )) }}
+	{{ Form::open(array('url' => 'recherche/rapide/ecole' )) }}
 
 	{{ Form::label('loyer_max','Loyer MAX') }}
 

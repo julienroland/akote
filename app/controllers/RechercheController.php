@@ -13,6 +13,12 @@ class RechercheController extends BaseController {
 
 		return View::make('recherche.rapide');
 	}
+	public function rechercheRapide(){
+		
+		$kot = DB::table('kot')->orderBy('prix')->get();
+		return View::make('recherche.type.ecole')->with('listeKot',$kot);
+		
+	}
 
 	public function detaillee(){
 

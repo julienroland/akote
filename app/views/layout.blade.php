@@ -3,11 +3,12 @@
 <head>
 	<meta charset="UTF-8">
 	<title>Document</title>
+	 {{ HTML::style('/css/style.css') }}
 </head>
 <body>
 <nav role="navigation">
 	<div>
-		<h1>Logo</h1>
+		<h1>{{link_to_route('showIndex','logo')}}</h1>
 	</div>
 	<div>
 		<ul>
@@ -17,7 +18,7 @@
 		</ul>
 	</div>
 	<div>
-		<p><a href="">S'indentifier</a></p>
+		<p><a href="">{{link_to_route('identifierUser','S\'indentifier')}}</a></p>
 		<p>
 		{{
 

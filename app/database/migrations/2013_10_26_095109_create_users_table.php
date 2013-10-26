@@ -3,7 +3,7 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateIndexTable extends Migration {
+class CreateUsersTable extends Migration {
 
 	/**
 	 * Run the migrations.
@@ -12,11 +12,13 @@ class CreateIndexTable extends Migration {
 	 */
 	public function up()
 	{
-		Schema::create('accueil', function(Blueprint $table)
+		Schema::create('users', function(Blueprint $table)
 		{
 			$table->increments('id');
-			$table->string('titre');
-			$table->string('texte');
+			$table->string('nom');
+			$table->string('prenom');
+			$table->string('email');
+			$table->string('motdepasse');
 			$table->timestamps();
 		});
 	}
@@ -28,7 +30,7 @@ class CreateIndexTable extends Migration {
 	 */
 	public function down()
 	{
-		Schema::drop('accueil');
+		Schema::drop('users');
 	}
 
 }

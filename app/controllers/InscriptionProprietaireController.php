@@ -55,64 +55,16 @@ class InscriptionProprietaireController extends BaseController {
 	{
 	 	return View::make('inscription.proprietaire.etape5');	
 	}
-	
+
 	public function annonce()
 	{
 	 	return View::make('inscription.proprietaire.annonce');	
 	}
-
-	/**
-	 * Store a newly created resource in storage.
-	 *
-	 * @return Response
-	 */
-	public function store()
+	public function comfirmer()
 	{
-		//
+	 	return View::make('inscription.proprietaire.comfirmer');	
 	}
 
-	/**
-	 * Display the specified resource.
-	 *
-	 * @param  int  $id
-	 * @return Response
-	 */
-	public function show()
-	{
-		return View::make('inscription.proprietaire');
-	}
-
-	/**
-	 * Show the form for editing the specified resource.
-	 *
-	 * @param  int  $id
-	 * @return Response
-	 */
-	public function edit($id)
-	{
-		//
-	}
-
-	/**
-	 * Update the specified resource in storage.
-	 *
-	 * @param  int  $id
-	 * @return Response
-	 */
-	public function update($id)
-	{
-		//
-	}
-
-	/**
-	 * Remove the specified resource from storage.
-	 *
-	 * @param  int  $id
-	 * @return Response
-	 */
-	public function destroy($id)
-	{
-		//
-	}
+	
 
 }

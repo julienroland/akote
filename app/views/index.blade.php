@@ -25,5 +25,8 @@
 
 	<p>{{link_to_route('showDetaillee','Détaillée')}}</p>
 	
+@if(isset($email))
 
+	{{$email}}
+@endif
 @stop
