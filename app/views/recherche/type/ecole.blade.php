@@ -5,7 +5,7 @@
 	@if(!empty($listeKot))
 		@foreach($listeKot as $kot)
 		<fieldset>	
-		<p>{{$kot->region}}</p>
+		<p>{{link_to_route('showAnnonce',$kot->region)}}</p>
 		<p>{{$kot->prix}}</p>
 		<p>{{$kot->disponible}}</p>
 		</fieldset>

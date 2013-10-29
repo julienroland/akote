@@ -1,18 +1,19 @@
 @extends('layout')
 
 @section('container')
+@if(isset($message))
+<p>{{$message}}</p>
+@endif
 {{Form::open(array('url'=>'identifier'))}}
 
 {{Form::label('email','Entrez votre email')}}
 {{Form::text('email','',array('placeholder'=>'email@gmail.com'))}}
 
-{{Form::label('motdepasse','Entrez votre mot de passe')}}
-{{Form::password('motdepasse','')}}
+{{Form::label('password','Entrez votre mot de passe')}}
+{{Form::password('password','')}}
 
 {{Form::submit('Se connecter')}}
 
 {{Form::close()}}
-@if(isset($nom))
-{{$nom}}
-@endif
+
 @stop

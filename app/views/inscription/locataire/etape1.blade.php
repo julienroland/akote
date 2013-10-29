@@ -5,6 +5,11 @@
 <ul>
 	<li>{{('etape1')}}</li>
 </ul>
+@if(isset($message))
+	@foreach($message->all('<li>:message</li>') as $error)
+		{{$error}}
+	@endforeach
+@endif
 <fieldset>
 	<legend>{{('Informations personnels')}}</legend>
 	{{Form::open(array('url'=>'inscription/locataire/comfirmer'))}}

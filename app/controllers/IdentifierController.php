@@ -13,30 +13,35 @@ class IdentifierController extends BaseController
 
 	public function requete()
 	{
+		
 		$email = Input::get('email');
-		$mdp = Input::get('motdepasse');
-		$validator = Validator::make(
-			array(
-				'email'=>$email,
-				'motdepasse'=>Hash::check($mdp)
-				),
-			array(
-				'email'=>'required',
-				'motdepasse'=>'required')
+		$mdp = Input::get('password');
+
+		$userdata = array(
+			'email'    => $email,
+			'password' => $mdp
 			);
 
-		if($validator->fails()){
-			$messages = $validator->messages();
-			return Redirect::to('profil.identifier')->with('message',$messages);
+		$rules = array(
+			'email' => 'required|email',
+			'password' => 'required'
+			);
+
+		$validator = Validator::make($userdata, $rules);
+		
+		if ($validator->passes()) {
+
+			if (Auth::attempt($userdata)) {
+				$nomPrenom = $userData[0]->nom.' '.$userData[0]->prenom;
+				return View::make('profil.identifier')
+				->with('message','Vous êtes maintenant connecté en tant que '.$nomPrenom);
+			} else {
+
+        // Redirect to the login page.
+				return View::make('profil.identifier')
+				->with('message','Erreur');
+			}
 		}
 
-		$record = User::where($email)->first();
-
-		if($record){
-			return Redirect::to('/');
-
-		}
-    	
-    	
-    }
+	}
 }

@@ -14,6 +14,7 @@
 /*
 *
 *	Français
+*
 */
 
 /* ACCUEIL */
@@ -56,25 +57,25 @@ Route::get('inscription',array(
 
 	));
 
-	
-	Route::get('inscription/proprietaire', function(){
 
-		Redirect::route('inscription/proprietaire/etape1');
+Route::get('inscription/proprietaire', function(){
 
-	});
-	Route::get('inscription/locataire', function(){
+	Redirect::route('inscription/proprietaire/etape1');
 
-		Redirect::route('inscription/locataire/etape1');
+});
+Route::get('inscription/locataire', function(){
 
-	});
-	Route::get('inscription/colocation', function(){
+	Redirect::route('inscription/locataire/etape1');
 
-		Redirect::route('inscription/colocation/etape1');
+});
+Route::get('inscription/colocation', function(){
 
-	});
+	Redirect::route('inscription/colocation/etape1');
 
-	/*Propriétaire*/
-	Route::any('inscription/proprietaire/etape1',array(
+});
+
+/*Propriétaire*/
+Route::any('inscription/proprietaire/etape1',array(
 
 	'as'=>'inscriptionProprietaire',
 	'uses'=>'InscriptionProprietaireController@index'
@@ -84,61 +85,67 @@ Route::get('inscription',array(
 		'as'=>'inscriptionProprietaire',
 		'uses'=>'InscriptionController@accueil'
 		))->where('etape','[0-5]{1}');*/
-	Route::post('inscription/proprietaire/etape2',array(
+Route::post('inscription/proprietaire/etape2',array(
 
 	'as'=>'inscriptionProprietaireAccount',
 	'uses'=>'InscriptionProprietaireController@createAccount'
 
 	));
-	Route::post('inscription/proprietaire/etape3',array(
+Route::post('inscription/proprietaire/etape3',array(
 
 	'as'=>'inscriptionProprietaireImage',
 	'uses'=>'InscriptionProprietaireController@image'
 
 	));	
-	Route::post('inscription/proprietaire/etape4',array(
+Route::post('inscription/proprietaire/etape4',array(
 
 	'as'=>'inscriptionProprietaireBatiment',
 	'uses'=>'InscriptionProprietaireController@batiment'
 
 	));
-	Route::post('inscription/proprietaire/etape5',array(
+Route::post('inscription/proprietaire/etape5',array(
 
 	'as'=>'inscriptionProprietaireAutre',
 	'uses'=>'InscriptionProprietaireController@autre'
 
 	));
-	Route::post('inscription/proprietaire/annonce',array(
+Route::post('inscription/proprietaire/annonce',array(
 
 	'as'=>'inscriptionProprietaireAnnonce',
 	'uses'=>'InscriptionProprietaireController@annonce'
 
 	));	
-	Route::any('inscription/proprietaire/comfirmer',array(
+Route::any('inscription/proprietaire/comfirmer',array(
 
 	'as'=>'inscriptionProprietaireComfirmer',
 	'uses'=>'InscriptionProprietaireController@comfirmer'
 
 	));
-	/*END proprietaire*/
+/*END proprietaire*/
 
-	/*locataire*/
-	Route::any('inscription/locataire/etape1',array(
+/*locataire*/
+Route::any('inscription/locataire/etape1',array(
 
 	'as'=>'inscriptionLocataire',
 	'uses'=>'InscriptionLocataireController@index'
 
 	));
-	Route::post('inscription/locataire/comfirmer',array(
+Route::post('inscription/locataire/comfirmer',array(
 
 	'as'=>'inscriptionLocataireComfirmer',
 	'uses'=>'InscriptionLocataireController@comfirmer'
 
 	));
-	/*END locataire*/
+Route::post('inscription/locataire/valider',array(
 
-	/*colocation*/
-	Route::any('inscription/colocation/etape1',array(
+	'as'=>'inscriptionLocataireValider',
+	'uses'=>'InscriptionLocataireController@valider'
+
+	));
+/*END locataire*/
+
+/*colocation*/
+Route::any('inscription/colocation/etape1',array(
 
 	'as'=>'inscriptionColocation',
 	'uses'=>'InscriptionColocationController@index'
@@ -146,43 +153,43 @@ Route::get('inscription',array(
 	));
 
 
-	Route::post('inscription/colocation/etape2',array(
+Route::post('inscription/colocation/etape2',array(
 
 	'as'=>'inscriptionColocationAccount',
 	'uses'=>'InscriptionColocationController@createAccount'
 
 	));
-	Route::post('inscription/colocation/etape3',array(
+Route::post('inscription/colocation/etape3',array(
 
 	'as'=>'inscriptionColocationImage',
 	'uses'=>'InscriptionColocationController@image'
 
 	));	
-	Route::post('inscription/colocation/etape4',array(
+Route::post('inscription/colocation/etape4',array(
 
 	'as'=>'inscriptionColocationBatiment',
 	'uses'=>'InscriptionColocationController@batiment'
 
 	));
-	Route::post('inscription/colocation/etape5',array(
+Route::post('inscription/colocation/etape5',array(
 
 	'as'=>'inscriptionColocationAutre',
 	'uses'=>'InscriptionColocationController@autre'
 
 	));
-	Route::post('inscription/colocation/annonce',array(
+Route::post('inscription/colocation/annonce',array(
 
 	'as'=>'inscriptionColocationAnnonce',
 	'uses'=>'InscriptionColocationController@annonce'
 
 	));	
-	Route::any('inscription/colocation/comfirmer',array(
+Route::any('inscription/colocation/comfirmer',array(
 
 	'as'=>'inscriptionColocationComfirmer',
 	'uses'=>'InscriptionColocationController@comfirmer'
 
 	));
-	/*END colocation*/
+/*END colocation*/
 /*END INSCRIPTION*/
 
 /*
@@ -219,36 +226,56 @@ Route::get('recherche',array(
 
 	));
 
-	/*rapide*/
+/*rapide*/
 
-	Route::get('recherche/rapide',array(
+Route::get('recherche/rapide',array(
 
 	'as'=>'showRapide',
 	'uses'=>'RechercheController@rapide'
 
 	));
-	Route::model('type','User');
+Route::model('type','User');
 	/*Route::any('recherche/rapide/{type}',array(
 
 	'as'=>'showRapideEcole',
 	'uses'=>'RechercheController@rechercheRapide'
 
 	));*/
-	Route::any('recherche/rapide/ecole',array(
-		'as'=>'showRapide',
-		'uses'=>'RechercheController@rechercheRapide'
-		));
+Route::any('recherche/rapide/ecole',array(
+	'as'=>'showRapideEcole',
+	'uses'=>'RechercheController@rechercheRapide'
+	));
 
-	/*END rapide*/
+/*END rapide*/
 
-	/*detaillee*/
+/*detaillee*/
 
-	Route::get('recherche/detaillee',array(
+Route::get('recherche/detaillee',array(
 
 	'as'=>'showDetaillee',
 	'uses'=>'RechercheController@detaillee'
 
 	));
 
-	/*END detaillee*/
+/*END detaillee*/
 /*END RECHERCHE*/
+/*
+*
+*	ANNONCE
+*
+*/
+/*voir annonce*/
+Route::get('annonce/id',array(
+	'as'=>'showAnnonce',
+	'uses'=>'AnnonceController@show'
+	));
+/*END voir annonce*/
+
+/*valider annonce*/
+Route::post('annonce/id/valider',array(
+	'as'=>'validateAnnonce',
+	'uses'=>'AnnonceController@validate'
+	));
+/*END valider annonce*/
+
+/*END ANNONCE*/

@@ -4,7 +4,9 @@
 
 <h1>{{ ('Akote') }}</h1>
 
-
+@if(isset($message))
+<p>{{$message}}</p>
+@endif
 <div>
 <h2>{{('Pourquoi choisir Akote.be ?')}}</h2>
 
