@@ -26,20 +26,29 @@ class IdentifierController extends BaseController
 			'email' => 'required|email',
 			'password' => 'required'
 			);
-
+		
 		$validator = Validator::make($userdata, $rules);
 		
 		if ($validator->passes()) {
 
 			if (Auth::attempt($userdata)) {
-				$nomPrenom = $userData[0]->nom.' '.$userData[0]->prenom;
-				return View::make('profil.identifier')
-				->with('message','Vous êtes maintenant connecté en tant que '.$nomPrenom);
+				
+				$user = User::where('email',$email)->first();
+				
+
+				Session::put('user',$user);
+			
+
+				$prenomNom = $user->prenom.' '.$user->nom;
+
+
+				return Redirect::to('profil')
+					->with('message','Vous êtes maintenant connecté en tant que '.$prenomNom);
 			} else {
 
-        // Redirect to the login page.
 				return View::make('profil.identifier')
-				->with('message','Erreur');
+					->with('message','Erreur');
+
 			}
 		}
 

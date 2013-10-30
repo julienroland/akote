@@ -59,7 +59,7 @@ return array(
     "required_if"      => "Le champ :attribute est obligatoire quand la valeur de :other est :value.",
     "required_with"    => "Le champ :attribute est obligatoire quand :values est présent.",
     "required_without" => "Le champ :attribute est obligatoire quand :values n'est pas présent.",
-    "same"             => "Les champs :attribute et :other doivent être identiques.",
+    "same"             => "Les champs :other doivent être identiques.",
     "size"             => array(
         "numeric" => "La taille de la valeur de :attribute doit être :size.",
         "file"    => "La taille du fichier de :attribute doit être de :size kilobytes.",

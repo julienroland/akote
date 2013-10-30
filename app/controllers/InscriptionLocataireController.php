@@ -21,6 +21,7 @@ class InscriptionLocataireController extends BaseController {
 		$email = Input::get('email');
 		$nom = Input::get('nom');
 		$motdepasse = Input::get('motdepasse');
+		$motdepasseComfirm = Input::get('passwordComfirm');
 
 		$motdepasseH = Hash::make($motdepasse);
 
@@ -41,12 +42,14 @@ class InscriptionLocataireController extends BaseController {
 		$validator = Validator::make(
 			array(
 				'name' => $nom,
-				'password' => $motdepasseH,
+				'password' => $motdepasse,
+				'passwordComfirm'=>$motdepasseComfirm,
 				'email' => $email
 				),
 			array(
-				'name' => 'required',
-				'password' => 'required|min:3',
+				'name' => 'required|alpha',
+				'password' => 'required|min:3|max:20',
+				'passwordComfirm'=>'required|same:password',
 				'email' => 'required|email|unique:users'
 				)
 			);
@@ -64,7 +67,9 @@ class InscriptionLocataireController extends BaseController {
 }
 public function valider(){
 
-	
+	$nom = Session::get('infosCompte')['nom'];
+	$email = Session::get('infosCompte')['email'];
+	$motdepasseH = Session::get('infosCompte')['password'];
 
 	$ajout = DB::table('users')->insert(
 		array(
@@ -76,9 +81,12 @@ public function valider(){
 		);
 	if(!$ajout){
 
-		return Redirect::to('inscription.locataire.etape1')->with('message','Erreur d\'enregistrement');
+		return Redirect::to('inscription/locataire/etape1');
 		
-	}
+		}
+
+		return Redirect::to('inscription/locataire/etape1');
+
 }
 
 

@@ -6,9 +6,9 @@
 	<li>{{('etape1')}}</li>
 </ul>
 @if(isset($message))
-	@foreach($message->all('<li>:message</li>') as $error)
-		{{$error}}
-	@endforeach
+@foreach($message->all('<li>:message</li>') as $error)
+{{$error}}
+@endforeach
 @endif
 <fieldset>
 	<legend>{{('Informations personnels')}}</legend>
@@ -20,9 +20,12 @@
 	{{Form::label('motdepasse','Entrez un mot de passe')}}
 	{{Form::password('motdepasse')}}
 
+	{{Form::label('passwordComfirm','Retapper votre mot de passe')}}
+	{{Form::password('passwordComfirm','')}}
+	
 	{{Form::label('nom','Votre nom de famille')}}
 	{{Form::text('nom','',array('placeholder'=>'Roland'))}}
-		
+
 	{{Form::submit('Valider')}}
 	{{Form::close()}}
 </fieldset>

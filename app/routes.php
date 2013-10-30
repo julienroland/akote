@@ -17,6 +17,23 @@
 *
 */
 
+/*
+*
+*	IF LOGIN
+*
+*/
+
+Route::group(array('before','auth'),function(){
+
+	Route::get('inscription/proprietaire/epate1',function(){
+
+		
+	});
+
+});
+
+/* END IF LOGIN */
+
 /* ACCUEIL */
 Route::get('/',array(
 
@@ -43,7 +60,33 @@ Route::post('identifier',array(
 
 /*END IDENTIFIER*/
 
+/*
+*
+* DECONNECTER
+*
+*/
 
+Route::get('deconnecter',array(
+	'as'=>'deconnecterUser',
+	'uses'=>'DeconnecterController@accueil'
+	));
+
+/*END DECONNECTER*/
+
+/*
+*
+*	PROFILE
+*
+*/
+	Route::get('profil',array(
+		'as'=>'profilUser',
+		'uses'=>'ProfilController@accueil'
+		));
+	Route::get('informationsProfil',array(
+		'as'=>'informationsProfil',
+		'uses'=>'ProfilController@informations'
+		));
+/*END PROFILE*/
 /* 
 *
 *INSCRIPTION
@@ -234,14 +277,7 @@ Route::get('recherche/rapide',array(
 	'uses'=>'RechercheController@rapide'
 
 	));
-Route::model('type','User');
-	/*Route::any('recherche/rapide/{type}',array(
-
-	'as'=>'showRapideEcole',
-	'uses'=>'RechercheController@rechercheRapide'
-
-	));*/
-Route::any('recherche/rapide/ecole',array(
+Route::any('recherche/rapide/{type?}',array(
 	'as'=>'showRapideEcole',
 	'uses'=>'RechercheController@rechercheRapide'
 	));

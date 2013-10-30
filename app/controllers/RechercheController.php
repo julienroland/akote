@@ -13,10 +13,25 @@ class RechercheController extends BaseController {
 
 		return View::make('recherche.rapide');
 	}
-	public function rechercheRapide(){
+	public function rechercheRapide($type = NULL){
 		
-		$kot = DB::table('kot')->orderBy('prix')->get();
-		return View::make('recherche.type.ecole')->with('listeKot',$kot);
+		if(Input::get('type')==='kot')
+		{
+			$kot = DB::table('kot')->orderBy('prix')->get();
+			return View::make('recherche.type.kot')->with('listeKot',$kot);
+		}
+		elseif(Input::get('type')==='ecole')
+		{
+			$kot = DB::table('kot')->orderBy('prix')->get();
+			return View::make('recherche.type.ecole')->with('listeKot',$kot);
+		}
+		elseif(Input::get('type')==='ville')
+		{
+			$kot = DB::table('kot')->orderBy('prix')->get();
+			return View::make('recherche.type.ville')->with('listeKot',$kot);
+
+		}
+
 		
 	}
 
