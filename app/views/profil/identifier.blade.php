@@ -15,5 +15,6 @@
 {{Form::submit('Se connecter')}}
 
 {{Form::close()}}
+{{link_to_route('showInscription','Pas encore de compte ? Inscrivez-vous')}}
 
 @stop

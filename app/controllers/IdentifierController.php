@@ -42,11 +42,11 @@ class IdentifierController extends BaseController
 				$prenomNom = $user->prenom.' '.$user->nom;
 
 
-				return Redirect::to('profil')
+				return Redirect::intended('/')
 					->with('message','Vous êtes maintenant connecté en tant que '.$prenomNom);
 			} else {
 
-				return View::make('profil.identifier')
+				return Redirect::to('identifier')
 					->with('message','Erreur');
 
 			}

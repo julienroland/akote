@@ -5,7 +5,7 @@
 <ul>
 	<li>{{('Votre nom: ')}}{{Session::get('user')['nom']}}</li>
 	<li>{{('Votre prénom: ')}}{{Session::get('user')['prenom']}}</li>
-	<li>{{('Type de compte: ')}}{{Session::get('user')['nom']}}</li>
+	<li>{{('Type de compte: ')}}{{Session::get('user')['accountType']}}</li>
 	<li>{{('Votre email: ')}}{{Session::get('user')['email']}}</li>
 </ul>
 

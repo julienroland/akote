@@ -25,10 +25,11 @@
 
 Route::group(array('before','auth'),function(){
 
-	Route::get('inscription/proprietaire/epate1',function(){
-
+	//Route::get('identifier',function(){
 		
-	});
+		//return Redirect::intended('/');
+		
+	//});
 
 });
 
@@ -75,18 +76,29 @@ Route::get('deconnecter',array(
 
 /*
 *
-*	PROFILE
+*	PROFIL
 *
 */
 	Route::get('profil',array(
 		'as'=>'profilUser',
 		'uses'=>'ProfilController@accueil'
 		));
-	Route::get('informationsProfil',array(
+	Route::get('profil/informations',array(
 		'as'=>'informationsProfil',
 		'uses'=>'ProfilController@informations'
 		));
-/*END PROFILE*/
+	/*Locataire view*/
+	Route::get('profil/recherche_enregistre',array(
+		'as'=>'rechercheEnregistreProfil',
+		'uses'=>'profilController@recherche'
+		));
+	Route::get('profil/mon_kot',array(
+		'as'=>'showKotProfil',
+		'uses'=>'profilController@monKot'
+		));
+	/*end locataire view*/
+/*END PROFIL*/
+
 /* 
 *
 *INSCRIPTION
@@ -241,8 +253,13 @@ Route::any('inscription/colocation/comfirmer',array(
 *
 */
 
-Route::any('profil/{user_name}',array(
+Route::any('profil/',array(
 	'as'=>'showProfil',
+	'uses'=>'profilController@accueil'
+	));
+Route::any('profil/kot',array(
+	'as'=>'showMonKot',
+	'uses'=>'profilController@monKot'
 	));
 /*END PROFIL*/
 
@@ -256,6 +273,7 @@ Route::get('cgu',array(
 	'uses' => 'cguController@voir'
 	));
 /*END CGU*/
+
 /*
 *
 * RECHERCHE 
@@ -308,7 +326,7 @@ Route::get('annonce/id',array(
 /*END voir annonce*/
 
 /*valider annonce*/
-Route::post('annonce/id/valider',array(
+Route::any('annonce/id/valider',array('before'=>'auth',
 	'as'=>'validateAnnonce',
 	'uses'=>'AnnonceController@validate'
 	));

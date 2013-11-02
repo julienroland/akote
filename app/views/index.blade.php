@@ -31,25 +31,28 @@
 {{ Form::open(array('url' => 'recherche/rapide/' )) }}
 
 {{Form::label('ecole','Une école')}}
-{{Form::radio('type','ecole',true,array('id'=>'ecole'))}}
+{{Form::radio('type','ecole',false,array('id'=>'ecole'))}}
 
 {{Form::label('ville','Une ville')}}
-{{Form::radio('type','ville',false,array('id'=>'ville'))}}
+{{Form::radio('type','ville',true,array('id'=>'ville'))}}
 
 {{Form::label('kot','Un kot')}}
 {{Form::radio('type','kot',false,array('id'=>'kot'))}}
 
 {{ Form::label('loyer_max','Loyer MAX') }}
 
-{{ Form::select('loyer_max',array('200'))
+{{ Form::select('loyer_max',array(
+	'100'=>'100',
+	'200'=>'200'
+	))
 
 }}
 
 {{ Form::label('loyer_min','Loyer MIN') }}
 
 {{ Form::select('loyer_min', array(
-	'200',
-	'3OO'
+	'100'=>'100',
+	'200'=>'200'
 	));
 
 }}
@@ -63,11 +66,17 @@
 
 }}
 <div id="gmap"></div>
-{{Form::text('map','',array('id'=>'map','placeholder'=>'Rue code postal,ville'))}}
-{{Form::text('distance','',array('id'=>'distance','placeholder'=>'100m'))}}
+{{Form::text('zone','',array('id'=>'map','placeholder'=>'Rue code postal,ville'))}}
+{{Form::text('distance','',array('id'=>'distance','placeholder'=>'Entrez la valeur numerique en mètre : 1000'))}}
 
-{{ Form::submit('Chercher') }}
-
+{{ Form::button('Filtrer',array('id'=>'filtrer')) }}
+@if(Auth::check())
+{{Form::label('enregistrer','Enregistrer la recherche')}}
+{{Form::checkbox('enregistrer')}}
+{{Form::label('enregistrerNom','Donnez un nom à votre recherche enregistré (20 charactères maximun)')}}
+{{Form::text('enregistrerNom','',array('placeholder'=>'ex: recherche kot liège'))}}
+@endif
+{{Form::submit('envoye')}}
 {{Form::close()}}
 
 {{ $errors->first('url','<div class="error">:message</div>') }} 
@@ -136,7 +145,16 @@
 
 
 </fieldset>
-<script src="http://maps.googleapis.com/maps/api/js?key=AIzaSyDHJ3p-sn1Y5tJGrzH9MF5cbR5sdsDmhfg&sensor=false"></script>
+@if(Auth::check())
+{{('Recherche enregistrée')}}
+{{Form::open(array('enregistre'=>'recherche/enregistrée'))}}
+
+{{Form::select('mesRecherches',array('toto','titi'))}}
+
+{{Form::submit('chercher')}}
+{{Form::close()}}
+@endif
+<script src="http://maps.googleapis.com/maps/api/js?key=AIzaSyDHJ3p-sn1Y5tJGrzH9MF5cbR5sdsDmhfg&sensor=false&libraries=places"></script>
 <script type="text/javascript" src="js/jquery.js"></script>
 <script type="text/javascript" src="js/map.js"></script>
 

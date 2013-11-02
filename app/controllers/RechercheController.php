@@ -14,6 +14,78 @@ class RechercheController extends BaseController {
 		return View::make('recherche.rapide');
 	}
 	public function rechercheRapide($type = NULL){
+
+		$formData = array(
+			'type' =>Input::get('type'),
+			'loyer_max' => Input::get('loyer_max'),
+			'loyer_min' => Input::get('loyer_min'),
+			'charges' => Input::get('charge')
+			);
+		$formRules = array(
+			'type' =>'required',
+			'loyer_max' => 'required',
+			'loyer_min' => 'required',
+			'charges' => 'required'
+			);
+
+		$validator = Validator::make($formData, $formRules);
+
+		if($validator->fails())
+		{
+			$messages = $validator->messages();
+			return Redirect::to('/')->with('validatorMessge',$messages);
+		}
+
+		$type=Input::get('type');
+		$loyerMax=Input::get('loyer_max');
+		$loyerMin=Input::get('loyer_min');
+		$charges=Input::get('charge');
+
+		if(Auth::check())
+		{
+			if(Input::get('enregistrer')=== '1') //register the rapid search of user
+			{
+				if(!empty(Input::get('zone')&&!empty(Input::get('distance')))){
+					$zone=Input::get('zone');
+					$distance=Input::get('distance');
+				}
+				else
+				{
+					$zone='Aucune donnée entrée';
+					$distance='Aucune donnée entrée';
+				}
+				
+				if(!empty(Input::get('enregistrerNom')))
+				{
+					$nom = Input::get('enregistrerNom');
+				}
+				else
+				{
+					$nom = 'recherchePerso';
+				}
+				
+
+				$arrayRechercheRapide = array(
+					'type'=>$type,
+					'loyer_max'=>$loyerMax,
+					'loyer_min'=>$loyerMin,
+					'charges'=>$charges,
+					'zone'=>$zone,
+					'distance'=>$distance
+					);
+
+				$rechercheRapide = DB::table('rechercheRapideEnregistre')
+					->insert(array(
+						'user_id'=>Session::get('user')['id'],
+						'rechercheEnregistre'=>json_encode($arrayRechercheRapide),
+						'nom' =>$nom						
+						)
+					);
+					if(!$rechercheRapide){
+						return Redirect::to('/')->with('bddMessage','Erreur lors de l\'ajout à la base de donnée');
+					}
+			}
+		}
 		
 		if(Input::get('type')==='kot')
 		{
@@ -27,8 +99,18 @@ class RechercheController extends BaseController {
 		}
 		elseif(Input::get('type')==='ville')
 		{
-			$kot = DB::table('kot')->orderBy('prix')->get();
-			return View::make('recherche.type.ville')->with('listeKot',$kot);
+			if(!empty(Input::get('zone'))){
+				$region = strtolower(Input::get('zone'));
+
+				$kot = DB::table('kot')->orderBy('prix')->where('region',$region)->get();
+				return View::make('recherche.type.ville')->with('listeKot',$kot);
+			}
+			else
+			{
+				$kot = DB::table('kot')->orderBy('prix')->get();
+				return View::make('recherche.type.ville')->with(array('listeKot'=>$kot,'message'=>'Vous n\'avez ciblé aucune ville précédemment, vous pouvez le faire '.link_to_route('showIndex','maintenant')));
+			}
+			
 
 		}
 

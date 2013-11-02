@@ -7,7 +7,7 @@ class DeconnecterController extends BaseController
 	{
 		Auth::logout();
 		Session::forget('user');
-		Return View::make('index');
+		return Redirect::intended('/');
 	}
 
 

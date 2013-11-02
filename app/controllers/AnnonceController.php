@@ -22,8 +22,9 @@ class AnnonceController extends BaseController {
 	}
 	public function validate()
 	{
-		
-		Return View::make('annonces.validate');
+		$chambre = Input::get('chambre');
+	
+		Return View::make('annonces.validate')->with('chambre',$chambre);
 
 	}
 

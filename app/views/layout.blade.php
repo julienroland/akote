@@ -21,7 +21,7 @@
 	<div>
 	@if (Auth::check())
 		<p>{{link_to_route('deconnecterUser','Se déconnecter')}}</p>
-		<p>{{link_to_route('profilUser','Profile')}}</p>
+		<p>{{link_to_route('profilUser','Profil')}}</p>
 	@else
 		<p>{{link_to_route('identifierUser','S\'indentifier')}}</p>
 		<p>
