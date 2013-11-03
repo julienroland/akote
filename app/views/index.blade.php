@@ -7,6 +7,9 @@
 @if(isset($message))
 <p>{{$message}}</p>
 @endif
+@if(Auth::check())
+Activité(s) - Dernière(s) visite(s) - dernier(s) message(s)
+@else
 <div>
 	<h2>{{('Pourquoi choisir Akote.be ?')}}</h2>
 
@@ -20,7 +23,7 @@
 	<p>{{('Lorem ipsum dolor sit amet, consectetur adipisicing elit. Deleniti, quo, pariatur, dolor aliquam ad odio non praesentium temporibus qui dolorem illum alias est sequi itaque deserunt tempora doloribus quas. Facilis.')}}</p>
 
 </div>
-
+@endif
 <h2>{{('Recherche')}}</h2>
 
 <p>{{link_to_route('showRapide','Rapide')}}</p>
@@ -61,13 +64,15 @@
 
 {{ Form::select('charge', array(
 	'Comprise',
-	'fuck off'
+	'non-comprise'
 	));
 
 }}
 <div id="gmap"></div>
+{{Form::label('map','Indiquez l\'addresse')}}
 {{Form::text('zone','',array('id'=>'map','placeholder'=>'Rue code postal,ville'))}}
-{{Form::text('distance','',array('id'=>'distance','placeholder'=>'Entrez la valeur numerique en mètre : 1000'))}}
+{{Form::label('distance','Indiquez le rayon du filtre (celui-ci est en mètre)')}}
+{{Form::text('distance','',array('id'=>'distance','placeholder'=>'ex : 1000 pour 1km'))}}
 
 {{ Form::button('Filtrer',array('id'=>'filtrer')) }}
 @if(Auth::check())

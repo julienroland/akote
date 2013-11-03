@@ -98,7 +98,20 @@ Route::get('deconnecter',array(
 		));
 	/*end locataire view*/
 /*END PROFIL*/
+/*
+*
+*	MAP
+*
+*/
+	/*Ville map*/
 
+	Route::get('map/ville',array(
+		'as'=>'showVilleMap',
+		'uses'=>'mapController@ville'
+		));
+
+	/*END ville map*/
+/*END MAP*/
 /* 
 *
 *INSCRIPTION

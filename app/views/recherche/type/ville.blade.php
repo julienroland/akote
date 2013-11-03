@@ -4,6 +4,7 @@
 @if(isset($message))
 {{$message}}
 @endif
+
 @if(isset($listeKot))
 	@if(!empty($listeKot))
 		@foreach($listeKot as $kot)

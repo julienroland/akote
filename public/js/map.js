@@ -22,8 +22,11 @@
     var position = document.getElementById('map').value;
     var distance = document.getElementById('distance').value;
     getCity(position,distance);
-   
-
+  }); 
+   $('#map').change(function(){
+    var position = document.getElementById('map').value;
+    var distance = document.getElementById('distance').value;
+    getCity(position,distance);
   });
   var drawCircle = function(oCenter,sDistance){
     var nDistance = parseFloat(sDistance);

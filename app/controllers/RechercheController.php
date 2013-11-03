@@ -108,7 +108,7 @@ class RechercheController extends BaseController {
 			else
 			{
 				$kot = DB::table('kot')->orderBy('prix')->get();
-				return View::make('recherche.type.ville')->with(array('listeKot'=>$kot,'message'=>'Vous n\'avez ciblé aucune ville précédemment, vous pouvez le faire '.link_to_route('showIndex','maintenant')));
+				return View::make('recherche.type.ville')->with(array('listeKot'=>$kot,'message'=>'Vous n\'avez ciblé aucune ville précédemment, vous pouvez le faire '.link_to_route('showVilleMap','maintenant')));
 			}
 			
 
