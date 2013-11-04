@@ -84,7 +84,7 @@ class RechercheController extends BaseController {
 					if(!$rechercheRapide){
 						return Redirect::to('/')->with('bddMessage','Erreur lors de l\'ajout à la base de donnée');
 					}
-			}
+			}//end enregistrement recherche
 		}
 		
 		if(Input::get('type')==='kot')
@@ -103,8 +103,13 @@ class RechercheController extends BaseController {
 				$region = strtolower(Input::get('zone'));
 
 				$kot = DB::table('kot')->orderBy('prix')->where('region',$region)->get();
-				return View::make('recherche.type.ville')->with('listeKot',$kot);
-			}
+				
+				if(!$kot)
+				{
+				$kot = DB::table('kot')->orderBy('region')->get();
+				}
+				return View::make('recherche.type.ville')->with(array('listeKot'=>$kot,'message'=>'Aucun résultat ne correspond à votre séléection, voici les kots les plus proches.'));
+			}	
 			else
 			{
 				$kot = DB::table('kot')->orderBy('prix')->get();
