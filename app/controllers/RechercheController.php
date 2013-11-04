@@ -36,6 +36,24 @@ class RechercheController extends BaseController {
 			return Redirect::to('/')->with('validatorMessge',$messages);
 		}
 		$type=Input::get('type');
+		if($type === 'ville' )
+		{
+			$ville = true;
+			$kot=false;
+			$ecole = false;
+		}
+		else if($type === 'ecole' )
+		{
+			$ville = false;
+			$kot=false;
+			$ecole = true;
+		}
+		else if($type === 'kot' )
+		{
+			$ville = false;
+			$kot=true;
+			$ecole = false;
+		}
 		$loyerMax=Input::get('loyer_max');
 		$loyerMin=Input::get('loyer_min');
 		$charges=Input::get('charge');
@@ -43,7 +61,9 @@ class RechercheController extends BaseController {
 		$distance=Input::get('distance');
 
 		$arrayRechercheRapide = array(
-			'type'=>$type,
+			'ville'=>$ville,
+			'ecole'=>$ecole,
+			'kot'=>$kot,
 			'loyer_max'=>$loyerMax,
 			'loyer_min'=>$loyerMin,
 			'charges'=>$charges,
