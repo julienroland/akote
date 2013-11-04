@@ -35,25 +35,28 @@ class RechercheController extends BaseController {
 			$messages = $validator->messages();
 			return Redirect::to('/')->with('validatorMessge',$messages);
 		}
-
 		$type=Input::get('type');
 		$loyerMax=Input::get('loyer_max');
 		$loyerMin=Input::get('loyer_min');
 		$charges=Input::get('charge');
+		$zone=Input::get('zone');
+		$distance=Input::get('distance');
 
+		$arrayRechercheRapide = array(
+			'type'=>$type,
+			'loyer_max'=>$loyerMax,
+			'loyer_min'=>$loyerMin,
+			'charges'=>$charges,
+			'zone'=>$zone,
+			'distance'=>$distance
+			);
+
+		Session::put('ancienneRechercheRapide',$arrayRechercheRapide);
+		
 		if(Auth::check())
 		{
 			if(Input::get('enregistrer')=== '1') //register the rapid search of user
 			{
-				if(!empty(Input::get('zone')&&!empty(Input::get('distance')))){
-					$zone=Input::get('zone');
-					$distance=Input::get('distance');
-				}
-				else
-				{
-					$zone='Aucune donnée entrée';
-					$distance='Aucune donnée entrée';
-				}
 				
 				if(!empty(Input::get('enregistrerNom')))
 				{
@@ -62,28 +65,18 @@ class RechercheController extends BaseController {
 				else
 				{
 					$nom = 'recherchePerso';
-				}
-				
-
-				$arrayRechercheRapide = array(
-					'type'=>$type,
-					'loyer_max'=>$loyerMax,
-					'loyer_min'=>$loyerMin,
-					'charges'=>$charges,
-					'zone'=>$zone,
-					'distance'=>$distance
-					);
+				}	
 
 				$rechercheRapide = DB::table('rechercheRapideEnregistre')
-					->insert(array(
-						'user_id'=>Session::get('user')['id'],
-						'rechercheEnregistre'=>json_encode($arrayRechercheRapide),
-						'nom' =>$nom						
-						)
-					);
-					if(!$rechercheRapide){
-						return Redirect::to('/')->with('bddMessage','Erreur lors de l\'ajout à la base de donnée');
-					}
+				->insert(array(
+					'user_id'=>Session::get('user')['id'],
+					'rechercheEnregistre'=>json_encode($arrayRechercheRapide),
+					'nom' =>$nom						
+					)
+				);
+				if(!$rechercheRapide){
+					return Redirect::to('/')->with('bddMessage','Erreur lors de l\'ajout à la base de donnée');
+				}
 			}//end enregistrement recherche
 		}
 		
@@ -106,7 +99,7 @@ class RechercheController extends BaseController {
 				
 				if(!$kot)
 				{
-				$kot = DB::table('kot')->orderBy('region')->get();
+					$kot = DB::table('kot')->orderBy('region')->get();
 				}
 				return View::make('recherche.type.ville')->with(array('listeKot'=>$kot,'message'=>'Aucun résultat ne correspond à votre séléection, voici les kots les plus proches.'));
 			}	

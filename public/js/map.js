@@ -1,44 +1,86 @@
 
 ;(function($){
 
-  google.maps.visualRefresh = true;
-  var geocoder = new google.maps.Geocoder();
-  var oRayon;
-  var marker;
-  var aMapOptions = {
-    disableDefaultUI:true,
-    scrollwheel:false,
-    zoom: 7,
-    mapTypeId: google.maps.MapTypeId.ROADMAP,
-    center:new google.maps.LatLng(50.5,4)
-  }
-  var map = new google.maps.Map(document.getElementById('gmap'),aMapOptions);
+  "use strict";
+  var gMap,
+  geocoder = new google.maps.Geocoder(),
+  oRayon,
+  gMarker = new google.maps.Marker,
+  cityCircle,
+  gSpherical = google.maps.geometry.spherical,
+  input = document.getElementById('map'),
+  gPlaceAutoComplete;
+  //gRestriction = new google.maps.places.ComponentRestrictions( "be" );
+  
   $(function(){
 
+    //gPlaceAutoComplete.bindTo('bounds', gMap);
+    var options = {
+      types: ['(cities)'],
+      componentRestrictions: {country: "be"}
+    };
+    gPlaceAutoComplete = new google.maps.places.Autocomplete(input,options);
 
+    //gPlaceAutoComplete.setComponentRestrictions({'country': 'fr'});
 
-  })
+    $('#filtrer').click(function(){
+      var sDistanceValue = document.getElementById('distance').value;
 
-  $('#filtrer').click(function(){
-    var position = document.getElementById('map').value;
-    var distance = document.getElementById('distance').value;
-    getCity(position,distance);
-  }); 
-  $('#map').change(function(){
-    var position = document.getElementById('map').value;
-    var distance = document.getElementById('distance').value;
-    getCity(position,distance);
+      if($.isNumeric(sDistanceValue))
+      {
+        var nDistanceValueOk = sDistanceValue;
+      }
+      else
+      {
+        var nDistanceValueOk = 0;
+      }
+      var sCityValue = document.getElementById('map').value;
+      getCity( sCityValue , nDistanceValueOk );
+    }); 
+    $('#map').change(function(){
+      var sDistanceValue = document.getElementById('distance').value;
+
+      if($.isNumeric(sDistanceValue))
+      {
+        var nDistanceValueOk = sDistanceValue;
+      }
+      else
+      {
+        var nDistanceValueOk = 0;
+      }
+      var sCityValue = document.getElementById('map').value;
+      getCity( sCityValue , nDistanceValueOk );
+    });
+
+    displayGoogleMap();
+
   });
-  var drawCircle = function(oCenter,sDistance){
+  var displayGoogleMap = function (){
 
+    var aMapOptions = {
+      disableDefaultUI:true,
+      scrollwheel:false,
+      zoom: 7,
+      mapTypeId: google.maps.MapTypeId.ROADMAP,
+      center:new google.maps.LatLng(50.5,4)
+    }
+    gMap = new google.maps.Map(document.getElementById('gmap'),aMapOptions);
+
+  }
+  var drawCircle = function(oCenter,sDistance){
+    if( cityCircle )
+    {
+      cityCircle.setMap( null );
+    }
     var lat = oCenter.lb;
     var lng = oCenter.mb;
     nDistance = Number(sDistance);
+
     var oCenterCity = new google.maps.LatLng(lat, lng);
-    var gSpherical = google.maps.geometry.spherical; 
     var oCircleRange = gSpherical.computeOffset(oCenterCity, nDistance, 0);
 
-    createMarker(oCircleRange);
+    gMarker.setPosition( oCenterCity );
+    gMarker.setMap( gMap );
 
     var nDistance = google.maps.geometry.spherical.computeDistanceBetween(oCenterCity, oCircleRange);
 
@@ -48,11 +90,11 @@
       strokeWeight: 2,
       fillColor: '#FF0000',
       fillOpacity: 0.35,
-      map: map,
+      map: gMap,
       center: oCenter,
       radius: nDistance
     };
-    var  cityCircle = new google.maps.Circle(aCircleOptions);
+    cityCircle = new google.maps.Circle(aCircleOptions);
   }
 
   var getCity = function(sPosition,sDistance){
@@ -70,12 +112,15 @@
         if(sStatus ===google.maps.GeocoderStatus.OK)
         {
           var center = aResults[0].geometry.location;
-          map.setCenter(aResults[0].geometry.location);
-          map.setZoom(14);
-          
-          
+          gMap.setZoom( 14 );
+          gMap.panTo ( center );
+          console.log(center);
+          var sCoords = center.lb +','+ center.mb;
+          $('#coords').attr('value',sCoords);
 
-          createMarker(center);
+          gMarker.setPosition( center);
+          gMarker.setMap( gMap );
+
           drawCircle(center,sDistance);
         }
         else if(sStatus ===google.maps.GeocoderStatus.ZERO_RESULTS)
@@ -87,30 +132,15 @@
         }
       })
     }
-    
+
   }
-  var createMarker = function(center){
-   if (marker) {
+  var toRad = function(number){
 
-    marker.setPosition(center);
+    return number * Math.PI / 180;
 
-  } else {
 
-    var marker = new google.maps.Marker({
-      title:"Tu habites ici",
-      position: center,
-      map:map,
-
-    });
   }
-}
-var toRad = function(number){
-
-  return number * Math.PI / 180;
-
-
-}
-var toDegree = function(number){
-  return Math.PI * number / 180;
-}
+  var toDegree = function(number){
+    return Math.PI * number / 180;
+  }
 }).call(this,jQuery);

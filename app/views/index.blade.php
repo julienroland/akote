@@ -29,6 +29,7 @@ Activité(s) - Dernière(s) visite(s) - dernier(s) message(s)
 <p>{{link_to_route('showRapide','Rapide')}}</p>
 <p>{{('Rechercher par rapport à :')}}</p>
 
+<?php  var_dump(Session::get('ancienneRechercheRapide'));?>
 
 
 {{ Form::open(array('url' => 'recherche/rapide/' )) }}
@@ -73,7 +74,7 @@ Activité(s) - Dernière(s) visite(s) - dernier(s) message(s)
 {{Form::text('zone','',array('id'=>'map','placeholder'=>'Rue code postal,ville'))}}
 {{Form::label('distance','Indiquez le rayon du filtre (celui-ci est en mètre)')}}
 {{Form::text('distance','',array('id'=>'distance','placeholder'=>'ex : 1000 pour 1km'))}}
-
+{{Form::hidden('coords','',array('id'=>'coords'))}}
 {{ Form::button('Filtrer',array('id'=>'filtrer')) }}
 @if(Auth::check())
 {{Form::label('enregistrer','Enregistrer la recherche')}}
