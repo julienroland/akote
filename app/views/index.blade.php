@@ -77,6 +77,49 @@ Activité(s) - Dernière(s) visite(s) - dernier(s) message(s)
 {{Form::text('distance',Session::get('ancienneRechercheRapide')['distance'],array('id'=>'distance','placeholder'=>'ex : 1000 pour 1km'))}}
 {{Form::hidden('coords','',array('id'=>'coords'))}}
 {{ Form::button('Filtrer',array('id'=>'filtrer')) }}
+@else
+{{Form::label('ecole','Une école')}}
+{{Form::radio('type','ecole',false,array('id'=>'ecole'))}}
+
+{{Form::label('ville','Une ville')}}
+{{Form::radio('type','ville',true,array('id'=>'ville'))}}
+
+{{Form::label('kot','Un kot')}}
+{{Form::radio('type','kot',false,array('id'=>'kot'))}}
+
+
+{{ Form::label('loyer_max','Loyer MAX') }}
+{{ Form::select('loyer_max',array(
+	'100'=>'100',
+	'200'=>'200'
+	))
+
+}}
+
+{{ Form::label('loyer_min','Loyer MIN') }}
+
+{{ Form::select('loyer_min', array(
+	'100'=>'100',
+	'200'=>'200'
+	));
+
+}}
+
+{{ Form::label('charge','Charges') }}
+
+{{ Form::select('charge', array(
+	'Comprise',
+	'non-comprise'
+	));
+
+}}
+<div id="gmap"></div>
+{{Form::label('map','Indiquez l\'adresse')}}
+{{Form::text('zone','',array('id'=>'map','placeholder'=>'Rue code postal,ville'))}}
+{{Form::label('distance','Indiquez le rayon du filtre (celui-ci est en mètre)')}}
+{{Form::text('distance','',array('id'=>'distance','placeholder'=>'ex : 1000 pour 1km'))}}
+{{Form::hidden('coords','',array('id'=>'coords'))}}
+{{ Form::button('Filtrer',array('id'=>'filtrer')) }}
 @if(Auth::check())
 {{Form::label('enregistrer','Enregistrer la recherche')}}
 {{Form::checkbox('enregistrer')}}

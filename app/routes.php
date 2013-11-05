@@ -35,6 +35,17 @@ Route::group(array('before','auth'),function(){
 
 /* END IF LOGIN */
 
+/*
+*
+*	AJAX
+*
+*/
+	Route::any('dataKot',array(
+		'as'=>'listKot',
+		'uses'=>'ajaxController@listKot'
+		));
+/*END AJAX*/
+
 /* ACCUEIL */
 Route::get('/',array(
 
