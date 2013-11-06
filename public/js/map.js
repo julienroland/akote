@@ -5,6 +5,7 @@
   var gMap,
   gMarkerKot,
   cityCircle = new google.maps.Circle(),
+  rectangle = new google.maps.Rectangle(),
   listKot = [],
   regLatLng = new RegExp("[,]"),
   geocoder = new google.maps.Geocoder(),
@@ -16,74 +17,122 @@
   gPlaceAutoComplete;
   
   $(function(){
-    $.ajax({
-      dataType: "json",
-      url:"dataKot",
-      success: function ( oResponse ){
-        console.log(oResponse.data);
 
-        createMarkerBDD(oResponse.data);
-      }
-    })
-    var options = {
-      types: ['(cities)'],
-      componentRestrictions: {country:"be"}
-    };
-    gPlaceAutoComplete = new google.maps.places.Autocomplete(input,options);
+   ajaxAllKot();
 
-    $('#filtrer').click(function(){
-      var sDistanceValue = document.getElementById('distance').value;
 
-      if($.isNumeric(sDistanceValue))
-      {
-        var nDistanceValueOk = sDistanceValue;
-      }
-      else
-      {
-        var nDistanceValueOk = 0;
-      }
-      var sCityValue = document.getElementById('map').value;
-      getCity( sCityValue , nDistanceValueOk );
-    }); 
+   var options = {
+    types: ['(cities)'],
+    componentRestrictions: {country:"be"}
+  };
+  gPlaceAutoComplete = new google.maps.places.Autocomplete(input,options);
 
-    $('#map').change(function(){
-      var sDistanceValue = document.getElementById('distance').value;
+  $('#filtrer').click(function(){
+    var sDistanceValue = document.getElementById('distance').value;
 
-      if($.isNumeric(sDistanceValue))
-      {
-        var nDistanceValueOk = sDistanceValue;
-      }
-      else
-      {
-        var nDistanceValueOk = 0;
-      }
-      var sCityValue = document.getElementById('map').value;
-      getCity( sCityValue , nDistanceValueOk );
-    });
+    if($.isNumeric(sDistanceValue))
+    {
+      var nDistanceValueOk = sDistanceValue;
+    }
+    else
+    {
+      var nDistanceValueOk = 0;
+    }
+    var sCityValue = document.getElementById('map').value;
+    getCity( sCityValue , nDistanceValueOk );
+  }); 
 
-    displayGoogleMap();
+  $('#map').change(function(){
+    var sDistanceValue = document.getElementById('distance').value;
 
+    if($.isNumeric(sDistanceValue))
+    {
+      var nDistanceValueOk = sDistanceValue;
+    }
+    else
+    {
+      var nDistanceValueOk = 0;
+    }
+    var sCityValue = document.getElementById('map').value;
+    getCity( sCityValue , nDistanceValueOk );
   });
-var createMarkerBDD = function(oData){
 
- for(var i=0;i<=oData.LatLng.length-1;i++)
- {
+  displayGoogleMap();
 
-  var v = oData.LatLng[i];
-  listKot.push(v.split(regLatLng));
-  createMarker( Number(listKot[i][0]) , Number(listKot[i][1]), oData.adresse[i] );
-  inRange(Number(listKot[i][0]) , Number(listKot[i][1]));   
-}
-}
-var inRange = function ( nLat , nLng )
-{
+});
 
-  if(prout)
-  {
-    cityCircle.setOptions(aCircleOptions);
-    var bounds = cityCircle.getBounds();
-    console.log(bounds.contains(new google.maps.LatLng(50.4658,4.8677)));
+  var ajaxAllKot = function(){
+   $.ajax({
+    dataType: "json",
+    url:"dataKot",
+    success: function ( oResponse ){
+
+      createMarkerBDD(oResponse.data);
+    }
+  })
+ }
+ var createMarkerBDD = function(oData){
+
+   for(var i=0;i<=oData.lat.length-1;i++)
+   {
+    var lat = oData.lat[i];
+    var lng = oData.lng[i];
+    var LatLng = [lat,lng];
+    listKot.push(LatLng);
+    createMarker( Number(listKot[i][0]) , Number(listKot[i][1]), oData.adresse[i] );
+    //inRange(Number(listKot[i][0]) , Number(listKot[i][1]));   
   }
+}
+var defineCircle = function(center, radius){
+  return {
+    strokeColor: '#FF0000',
+    strokeOpacity: 0.8,
+    strokeWeight: 2,
+    fillColor: '#FF0000',
+    fillOpacity: 0.35,
+    map: gMap,
+    center: center,
+    radius: radius
+  };
+}
+var defineRectangle = function(bounds){
+console.log(bounds);
+  return {
+   bounds: bounds,
+   map: gMap,
+   strokeColor: "#FF0000",
+   strokeOpacity: 0.8,
+   strokeWeight: 2,
+   fillColor: "#FF0000",
+   fillOpacity: 0.35,
+ };
+}
+var inRange = function ( oCenter, nDistance )
+{
+  
+  defineCircle(oCenter, nDistance);
+
+  var oCircleRangeN = gSpherical.computeOffset(oCenter, nDistance, 0); //marker limitant au NORD
+  var oCircleRangeE = gSpherical.computeOffset(oCenter, nDistance, 90); //marker limitant au EST
+  var oCircleRangeS = gSpherical.computeOffset(oCenter, nDistance, 180); //marker limitant au SUD
+  var oCircleRangeO = gSpherical.computeOffset(oCenter, nDistance, 360); //marker limitant au OUEST
+
+  var recBounds = new google.maps.LatLngBounds(
+    oCircleRangeN, 
+    oCircleRangeS,
+    oCircleRangeE,
+    oCircleRangeO
+    
+    );
+
+  var rOptions = defineRectangle(recBounds);
+  rectangle.setOptions(rOptions);
+ // cityCircle.setOptions(aCircleOptions);
+
+   // cityCircle.setOptions(aCircleOptions);
+    // var bounds = cityCircle.getBounds();
+     //console.log(bounds.contains(new google.maps.LatLng(nLat,nLng)));
+
 
  //console.log(bounds.contains(new google.maps.LatLng(nLat,nLng)));
 }
@@ -117,11 +166,10 @@ var drawCircle = function(oCenter,sDistance){
   {
     cityCircle.setMap( null );
   }
-  var lat = oCenter.lb;
-  var lng = oCenter.mb;
+
   nDistance = Number(sDistance);
 
-  var oCenterCity = new google.maps.LatLng(lat, lng);
+  var oCenterCity = oCenter;
   var oCircleRangeN = gSpherical.computeOffset(oCenterCity, nDistance, 0); //marker limitant au NORD
   var oCircleRangeE = gSpherical.computeOffset(oCenterCity, nDistance, 90); //marker limitant au EST
   var oCircleRangeS = gSpherical.computeOffset(oCenterCity, nDistance, 180); //marker limitant au SUD
@@ -142,18 +190,14 @@ var drawCircle = function(oCenter,sDistance){
 
   var nDistance = google.maps.geometry.spherical.computeDistanceBetween(oCenterCity, oCircleRangeN);
 
-  var aCircleOptions = {
-    strokeColor: '#FF0000',
-    strokeOpacity: 0.8,
-    strokeWeight: 2,
-    fillColor: '#FF0000',
-    fillOpacity: 0.35,
-    map: gMap,
-    center: oCenter,
-    radius: nDistance
-  };
+  var aCircleOptions = defineCircle(oCenter, nDistance);
+
   cityCircle.setOptions(aCircleOptions);
 
+  inRange(oCenter, nDistance);
+
+    //var bounds = cityCircle.getBounds();
+    //console.log(bounds.contains(new google.maps.LatLng(50.4658,4.8677)));
   //inRange (range);
  // cityCircle = new google.maps.Circle(aCircleOptions);
 
@@ -163,6 +207,7 @@ var drawCircle = function(oCenter,sDistance){
 }
 var getCity = function(sPosition,sDistance){
  var nDistance = Number(sDistance);
+
  var aMapOptions = {
   disableDefaultUI:true,
   scrollwheel:false,
@@ -179,11 +224,11 @@ var getCity = function(sPosition,sDistance){
       gMap.setZoom( 14 );
       gMap.panTo ( center );
 
-      var sCoords = center.lb +','+ center.mb;
+      var sCoords = center;
       $('#coords').attr('value',sCoords);
-      console.log('ville:'+center);
+
       var oCircleRangeN = gSpherical.computeOffset(center, nDistance, 360);
-      console.log('bla:'+oCircleRangeN);
+
       gMarker.setPosition( center );
       gMarker.setMap( gMap );
 
