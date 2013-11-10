@@ -4,7 +4,7 @@
 @if(isset($message))
 {{$message}}
 @endif
-
+<?php var_dump($listeKot); ?>
 @if(isset($listeKot))
 	@if(!empty($listeKot))
 		@foreach($listeKot as $kot)

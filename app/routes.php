@@ -44,6 +44,10 @@ Route::group(array('before','auth'),function(){
 		'as'=>'listKot',
 		'uses'=>'ajaxController@listKot'
 		));
+	Route::any('dataEcole',array(
+		'as'=>'listEcole',
+		'uses'=>'ajaxController@listEcole'
+		));
 /*END AJAX*/
 
 /* ACCUEIL */
@@ -336,7 +340,9 @@ Route::get('recherche/detaillee',array(
 	));
 
 /*END detaillee*/
+
 /*END RECHERCHE*/
+
 /*
 *
 *	ANNONCE

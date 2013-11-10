@@ -36,20 +36,31 @@ class RechercheController extends BaseController {
 			return Redirect::to('/')->with('validatorMessge',$messages);
 		}
 		$type=Input::get('type');
+
+		if($type === 'aucun' )
+		{
+			$aucun = true;
+			$ville = false;
+			$kot=false;
+			$ecole = false;
+		}
 		if($type === 'ville' )
 		{
+			$aucun = false;
 			$ville = true;
 			$kot=false;
 			$ecole = false;
 		}
 		else if($type === 'ecole' )
 		{
+			$aucun = false;
 			$ville = false;
 			$kot=false;
 			$ecole = true;
 		}
 		else if($type === 'kot' )
 		{
+			$aucun = false;
 			$ville = false;
 			$kot=true;
 			$ecole = false;
@@ -58,10 +69,11 @@ class RechercheController extends BaseController {
 		$loyerMin=Input::get('loyer_min');
 		$charges=Input::get('charge');
 		$zone=Input::get('zone');
-		$distance=Input::get('distance');
+		$distance=Input::get('distances');
 
 		$arrayRechercheRapide = array(
 			'ville'=>$ville,
+			'aucun'=>$aucun,
 			'ecole'=>$ecole,
 			'kot'=>$kot,
 			'loyer_max'=>$loyerMax,
@@ -100,7 +112,19 @@ class RechercheController extends BaseController {
 			}//end enregistrement recherche
 		}
 		
-		if(Input::get('type')==='kot')
+		if(Input::get('type')==='aucun')
+		{
+
+			$kot = DB::table('kot')->get();
+
+			if(!$kot)
+			{
+				$kot = DB::table('kot')->get();
+			}
+			return View::make('recherche.type.aucun')->with('listeKot',$kot);	
+			
+		}
+		elseif(Input::get('type')==='kot')
 		{
 			$kot = DB::table('kot')->orderBy('prix')->get();
 			return View::make('recherche.type.kot')->with('listeKot',$kot);
@@ -112,23 +136,33 @@ class RechercheController extends BaseController {
 		}
 		elseif(Input::get('type')==='ville')
 		{
-			if(!empty(Input::get('zone'))){
-				$region = strtolower(Input::get('zone'));
-
-				$kot = DB::table('kot')->orderBy('prix')->where('region',$region)->get();
-				
-				if(!$kot)
-				{
-					$kot = DB::table('kot')->orderBy('region')->get();
-				}
-				return View::make('recherche.type.ville')->with(array('listeKot'=>$kot,'message'=>'Aucun résultat ne correspond à votre séléection, voici les kots les plus proches.'));
-			}	
+			if(!empty(Input::get('listKot')))
+			{
+				$kot = json_decode(Input::get('listKot')); //Champ de la ville
+				Session::put('kotFromGoogle',$kot);
+				return View::make('recherche.type.ville')->with('listeKot',Session::get('kotFromGoogle'));
+			}
 			else
 			{
-				$kot = DB::table('kot')->orderBy('prix')->get();
-				return View::make('recherche.type.ville')->with(array('listeKot'=>$kot,'message'=>'Vous n\'avez ciblé aucune ville précédemment, vous pouvez le faire '.link_to_route('showVilleMap','maintenant')));
+				if(!empty(Input::get('zone'))){
+					$region = strtolower(is_string(Input::get('zone')));
+					$region = ucwords($region);
+					//$region = DB::table('kot')->orderBy('prix')->where('region',$region)->get();
+
+					$kot = DB::table('kot')->orderBy('prix')->where('region',$region)->get();
+					
+					if(!$kot)
+					{
+						$kot = DB::table('kot')->orderBy('region')->get();
+					}
+					return View::make('recherche.type.ville')->with(array('listeKot'=>$kot,'message'=>'Aucun résultat ne correspond à votre séléection, voici les kots les plus proches.'));
+				}	
+				else
+				{
+					$kot = DB::table('kot')->orderBy('prix')->get();
+					return View::make('recherche.type.ville')->with(array('listeKot'=>$kot,'message'=>'Vous n\'avez ciblé aucune ville précédemment, vous pouvez le faire '.link_to_route('showVilleMap','maintenant')));
+				}
 			}
-			
 
 		}
 

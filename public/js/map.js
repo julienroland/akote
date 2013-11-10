@@ -3,15 +3,20 @@
 
   "use strict";
   var gMap,
+  gMarkerArrayKot = [],
+  gMarkerArrayEcole = [],
   gMarkerKot,
+  oKots,
+  oEcoles,
+  aKots = [],
   cityCircle = new google.maps.Circle(),
   rectangle = new google.maps.Rectangle(),
   listKot = [],
+  listEcole = [],
   regLatLng = new RegExp("[,]"),
   geocoder = new google.maps.Geocoder(),
   oRayon,
   gMarker = new google.maps.Marker,
-  cityCircle,
   gSpherical = google.maps.geometry.spherical,
   input = document.getElementById('map'),
   gPlaceAutoComplete;
@@ -19,7 +24,7 @@
   $(function(){
 
    ajaxAllKot();
-
+   ajaxAllEcole();
 
    var options = {
     types: ['(cities)'],
@@ -55,6 +60,7 @@
     }
     var sCityValue = document.getElementById('map').value;
     getCity( sCityValue , nDistanceValueOk );
+   // ajaxAllKot();
   });
 
   displayGoogleMap();
@@ -66,22 +72,77 @@
     dataType: "json",
     url:"dataKot",
     success: function ( oResponse ){
-
-      createMarkerBDD(oResponse.data);
+      oKots = oResponse.data;
+      createMarkerKot(oResponse.data);
     }
   })
  }
- var createMarkerBDD = function(oData){
+ var ajaxAllEcole = function(){
+   $.ajax({
+    dataType: "json",
+    url:"dataEcole",
+    success: function ( oResponse ){
+      oEcoles= oResponse.data;
+      createMarkerEcole(oResponse.data);
+    }
+  })
+ }
+ var createMarkerKot = function(oData){
+   var redIcon = new google.maps.MarkerImage('http://www.google.com/intl/en_us/mapfiles/ms/micons/red-dot.png');
+  
 
-   for(var i=0;i<=oData.lat.length-1;i++)
+   for(var i=0;i<=oData.length-1;i++)
    {
-    var lat = oData.lat[i];
-    var lng = oData.lng[i];
+    var lat = oData[i].lat;
+    var lng = oData[i].lng;
     var LatLng = [lat,lng];
     listKot.push(LatLng);
-    createMarker( Number(listKot[i][0]) , Number(listKot[i][1]), oData.adresse[i] );
-    //inRange(Number(listKot[i][0]) , Number(listKot[i][1]));   
+    drawMarkerKot( Number(listKot[i][0]) , Number(listKot[i][1]), oData[i].adresse, redIcon);
   }
+
+} 
+var createMarkerEcole = function(oData){
+ var blueIcon = new google.maps.MarkerImage('http://www.google.com/intl/en_us/mapfiles/ms/micons/blue-dot.png');
+
+ for(var i=0;i<=oData.length-1;i++)
+ {
+  var lat = oData[i].lat;
+  var lng = oData[i].lng;
+  var LatLng = [lat,lng];
+  listEcole.push(LatLng);
+  drawMarkerEcole( Number(listEcole[i][0]) , Number(listEcole[i][1]), oData[i].nom, blueIcon);
+}
+}
+
+var drawMarkerKot = function ( nLat , nLng, sNom , icon)
+{
+  var position = new google.maps.LatLng(nLat,nLng);
+
+  gMarkerKot = new google.maps.Marker({
+    position:position,
+    map : gMap,
+    animation: google.maps.Animation.DROP,
+    title : sNom,
+    icon : icon
+  });
+
+  gMarkerArrayKot.push(gMarkerKot);
+
+}
+var drawMarkerEcole = function ( nLat , nLng, sAdresse , icon)
+{
+  var position = new google.maps.LatLng(nLat,nLng);
+
+  gMarkerKot = new google.maps.Marker({
+    position:position,
+    map : gMap,
+    animation: google.maps.Animation.DROP,
+    title : sAdresse,
+    icon : icon
+  });
+
+  gMarkerArrayEcole.push(gMarkerKot);
+
 }
 var defineCircle = function(center, radius){
   return {
@@ -96,7 +157,7 @@ var defineCircle = function(center, radius){
   };
 }
 var defineRectangle = function(bounds){
-console.log(bounds);
+
   return {
    bounds: bounds,
    map: gMap,
@@ -109,45 +170,42 @@ console.log(bounds);
 }
 var inRange = function ( oCenter, nDistance )
 {
+  aKots = [];
   
-  defineCircle(oCenter, nDistance);
+  var options = defineCircle(oCenter, nDistance);
+  cityCircle.setOptions( options );
 
-  var oCircleRangeN = gSpherical.computeOffset(oCenter, nDistance, 0); //marker limitant au NORD
-  var oCircleRangeE = gSpherical.computeOffset(oCenter, nDistance, 90); //marker limitant au EST
-  var oCircleRangeS = gSpherical.computeOffset(oCenter, nDistance, 180); //marker limitant au SUD
-  var oCircleRangeO = gSpherical.computeOffset(oCenter, nDistance, 360); //marker limitant au OUEST
+  var boundd = cityCircle.getBounds();
+  for(var i=0;i<=oKots.length-1;i++)
+  {
+   //console.log(oKots[i].id+boundd.contains(new google.maps.LatLng(oKots[i].lat,oKots[i].lng)));
+   if(!boundd.contains(new google.maps.LatLng(oKots[i].lat,oKots[i].lng))){
+    gMarkerArrayKot[i].setMap(null);
+    //console.log(gMarkerArrayKot[i]);
+    //clearMarkers();
 
-  var recBounds = new google.maps.LatLngBounds(
-    oCircleRangeN, 
-    oCircleRangeS,
-    oCircleRangeE,
-    oCircleRangeO
-    
-    );
-
-  var rOptions = defineRectangle(recBounds);
-  rectangle.setOptions(rOptions);
- // cityCircle.setOptions(aCircleOptions);
-
-   // cityCircle.setOptions(aCircleOptions);
-    // var bounds = cityCircle.getBounds();
-     //console.log(bounds.contains(new google.maps.LatLng(nLat,nLng)));
-
-
- //console.log(bounds.contains(new google.maps.LatLng(nLat,nLng)));
+  }
+  else
+  {
+    aKots.push(oKots[i]);
+    //showMarkers();
+    gMarkerArrayKot[i].setMap( gMap );
+    gMap.fitBounds (boundd);
+  }
 }
-var createMarker = function ( nLat , nLng, sAdresse )
-{
-  var position = new google.maps.LatLng(nLat,nLng);
+$('#listKot').attr('value',JSON.stringify(aKots));
+}
 
-  gMarkerKot = new google.maps.Marker({
-    position:position,
-    map : gMap,
-    animation: google.maps.Animation.DROP,
-    title : sAdresse
-
-  });
-
+var clearMarkers = function() {
+  setAllMap(null);
+}
+function setAllMap(map) {
+  for (var i = 0; i < gMarkerArrayKot.length; i++) {
+    gMarkerArrayKot[i].setMap(map);
+  }
+}
+function showMarkers() {
+  setAllMap(gMap);
 }
 var displayGoogleMap = function (){
 
@@ -166,26 +224,12 @@ var drawCircle = function(oCenter,sDistance){
   {
     cityCircle.setMap( null );
   }
-
   nDistance = Number(sDistance);
 
   var oCenterCity = oCenter;
   var oCircleRangeN = gSpherical.computeOffset(oCenterCity, nDistance, 0); //marker limitant au NORD
-  var oCircleRangeE = gSpherical.computeOffset(oCenterCity, nDistance, 90); //marker limitant au EST
-  var oCircleRangeS = gSpherical.computeOffset(oCenterCity, nDistance, 180); //marker limitant au SUD
-  var oCircleRangeO = gSpherical.computeOffset(oCenterCity, nDistance, 360); //marker limitant au OUEST
 
-  var oNordLatLng = 'data:'+oCircleRangeN.lb+','+oCircleRangeN.mb;
-  var oEstLatLng = 'data:'+oCircleRangeE.lb+','+oCircleRangeE.mb; //COORDS O.N.E.S
-  var oSudLatLng = 'data:'+oCircleRangeS.lb+','+oCircleRangeS.mb;
-  var oOuestLatLng = 'data:'+oCircleRangeO.lb+','+oCircleRangeO.mb;
-
-  var latN = Number(oCircleRangeN.lb);
-  var lngN = Number(oCircleRangeN.mb);
-
-  //console.log( oNordLatLng );
   gMarker.setPosition( oCenterCity );
-  //gMarker.setPosition( oCircleRangeS );
   gMarker.setMap( gMap );
 
   var nDistance = google.maps.geometry.spherical.computeDistanceBetween(oCenterCity, oCircleRangeN);
@@ -196,13 +240,6 @@ var drawCircle = function(oCenter,sDistance){
 
   inRange(oCenter, nDistance);
 
-    //var bounds = cityCircle.getBounds();
-    //console.log(bounds.contains(new google.maps.LatLng(50.4658,4.8677)));
-  //inRange (range);
- // cityCircle = new google.maps.Circle(aCircleOptions);
-
- //var bounds = cityCircle.getBounds();
- //console.log(bounds.contains(new google.maps.LatLng(50.4658,4.8677)));
 
 }
 var getCity = function(sPosition,sDistance){
@@ -244,14 +281,5 @@ var getCity = function(sPosition,sDistance){
   })
 }
 
-}
-var toRad = function(number){
-
-  return number * Math.PI / 180;
-
-
-}
-var toDegree = function(number){
-  return Math.PI * number / 180;
 }
 }).call(this,jQuery);

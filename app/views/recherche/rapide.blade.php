@@ -4,7 +4,9 @@
 
 <fieldset>
 	<legend>Recherche rapide</legend>
-
+	@if(Session::has('kotFromGoogle'))
+	<?php var_dump(Session::get('kotFromGoogle')); ?>
+	@endif
 	<p>{{'Rapide'}}</p>
 
 	<p>{{link_to_route('showDetaillee','Détaillée')}}</p>
