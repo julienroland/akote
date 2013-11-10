@@ -6,9 +6,13 @@
   gMarkerArrayKot = [],
   gMarkerArrayEcole = [],
   gMarkerKot,
+  gMarkerEcole,
   oKots,
   oEcoles,
   aKots = [],
+  aNom = [],
+  sCachet,
+  nDistanceValueOk,
   cityCircle = new google.maps.Circle(),
   rectangle = new google.maps.Rectangle(),
   listKot = [],
@@ -22,50 +26,106 @@
   gPlaceAutoComplete;
   
   $(function(){
+    $(window).load(function(){
+      if($('#rapide input:checked').val()==='ville'){
+        console.log('ville');
+      }
+      else if($('#rapide input:checked').val()==='ecole'){
+        console.log('ecole');
+      } 
+      else if($('#rapide input:checked').val()==='aucun'){
+        console.log('tout');
+      }
+    });
 
-   ajaxAllKot();
-   ajaxAllEcole();
+    $('#rapide input').on("click", actionChangeType);
 
-   var options = {
-    types: ['(cities)'],
-    componentRestrictions: {country:"be"}
-  };
-  gPlaceAutoComplete = new google.maps.places.Autocomplete(input,options);
+    ajaxAllKot();
+    ajaxAllEcole();
 
-  $('#filtrer').click(function(){
-    var sDistanceValue = document.getElementById('distance').value;
+    var options = {
+      types: ['(cities)'],
+      componentRestrictions: {country:"be"}
+    };
+    gPlaceAutoComplete = new google.maps.places.Autocomplete(input,options);
 
-    if($.isNumeric(sDistanceValue))
-    {
-      var nDistanceValueOk = sDistanceValue;
-    }
-    else
-    {
-      var nDistanceValueOk = 0;
-    }
-    var sCityValue = document.getElementById('map').value;
-    getCity( sCityValue , nDistanceValueOk );
-  }); 
-
-  $('#map').change(function(){
-    var sDistanceValue = document.getElementById('distance').value;
-
-    if($.isNumeric(sDistanceValue))
-    {
-      var nDistanceValueOk = sDistanceValue;
-    }
-    else
-    {
-      var nDistanceValueOk = 0;
-    }
-    var sCityValue = document.getElementById('map').value;
-    getCity( sCityValue , nDistanceValueOk );
-   // ajaxAllKot();
+    displayGoogleMap();
   });
+  var autoriseFiltre = function( sCachet )
+  {
+    $('#filtrer').click(function(){
+      var sDistanceValue = document.getElementById('distance').value;
 
-  displayGoogleMap();
+      if($.isNumeric(sDistanceValue))
+      {
+        var nDistanceValueOk = sDistanceValue;
+      }
+      else
+      {
+        var nDistanceValueOk = 0;
+      }
+      var sCityValue = document.getElementById('map').value;
 
-});
+      if( sCachet === 'ville')
+      {
+        getCity( sCityValue , nDistanceValueOk );
+      }
+      else if( sCachet === 'ecole')
+      {
+        actionEcoleClick( nDistanceValueOk );
+      }
+      console.log(sCachet);
+
+    }); 
+
+    $('#map').change(function(){
+
+      var sDistanceValue = document.getElementById('distance').value;
+
+      if($.isNumeric(sDistanceValue))
+      {
+        var nDistanceValueOk = sDistanceValue;
+      }
+      else
+      {
+        var nDistanceValueOk = 0;
+      }
+      var sCityValue = document.getElementById('map').value;
+
+      if( sCachet === 'ville')
+      {
+        getCity( sCityValue , nDistanceValueOk );
+      }
+      else if( sCachet === 'ecole')
+      {
+        actionEcoleClick( nDistanceValueOk );
+      }
+      actionChangeType ( sCityValue, nDistanceValueOk);
+   // ajaxAllKot();
+ });
+  }
+  
+  var actionChangeType = function( sCityValue , nDistanceValueOk ){
+
+    if($('#rapide input:checked').val()==='ville'){
+
+      $('label.type').text('Indiquez l\'adresse');
+      $('input.type').attr('placeholder','Namur');
+      sCachet = 'ville';
+      
+    }
+    else if($('#rapide input:checked').val()==='ecole'){
+
+      $('label.type').text('Ecole ciblée');
+      $('input.type').attr('placeholder','Haute Ecole de La Province de Liège ou HEPL');
+      sCachet = 'ecole';
+    } 
+    else if($('#rapide input:checked').val()==='aucun'){
+      console.log('tout');
+    }
+
+    autoriseFiltre( sCachet );
+  }
 
   var ajaxAllKot = function(){
    $.ajax({
@@ -77,6 +137,7 @@
     }
   })
  }
+
  var ajaxAllEcole = function(){
    $.ajax({
     dataType: "json",
@@ -87,9 +148,10 @@
     }
   })
  }
+
  var createMarkerKot = function(oData){
    var redIcon = new google.maps.MarkerImage('http://www.google.com/intl/en_us/mapfiles/ms/micons/red-dot.png');
-  
+
 
    for(var i=0;i<=oData.length-1;i++)
    {
@@ -101,6 +163,7 @@
   }
 
 } 
+
 var createMarkerEcole = function(oData){
  var blueIcon = new google.maps.MarkerImage('http://www.google.com/intl/en_us/mapfiles/ms/micons/blue-dot.png');
 
@@ -129,11 +192,12 @@ var drawMarkerKot = function ( nLat , nLng, sNom , icon)
   gMarkerArrayKot.push(gMarkerKot);
 
 }
+
 var drawMarkerEcole = function ( nLat , nLng, sAdresse , icon)
 {
   var position = new google.maps.LatLng(nLat,nLng);
 
-  gMarkerKot = new google.maps.Marker({
+  gMarkerEcole = new google.maps.Marker({
     position:position,
     map : gMap,
     animation: google.maps.Animation.DROP,
@@ -143,6 +207,40 @@ var drawMarkerEcole = function ( nLat , nLng, sAdresse , icon)
 
   gMarkerArrayEcole.push(gMarkerKot);
 
+  actionEcoleClick();
+
+}
+
+var actionEcoleClick = function(){
+  google.maps.event.addListener(gMarkerEcole,'click',function(e) {
+    //centrer sur l'école
+    console.log(e);
+    console.log(oEcoles);
+    gMap.setZoom(12);
+    gMap.panTo(gMarkerEcole.getPosition());
+  //recuperer la lat/lng : //filtrer les kots en fonction d'un rayon
+  var sNom =[];
+  for(var i=0;i<=oEcoles.length-1;i++)
+  {
+    sNom = {latlng : new google.maps.LatLng( oEcoles[i].lat , oEcoles[i].lng ),nom:oEcoles[i].nom};
+    aNom.push(sNom); 
+
+  }
+  //console.log(e.latLng.lat === sNom.lat );
+
+  if( e.latLng.lat === sNom.lat && e.latLng.lng === sNom.lng)
+  {
+    
+    console.log(sNom);
+  }
+  console.log(aNom);
+
+  //console.log(nDistanceValueOk);
+ // inRange( e.latLng , )
+  //console.log(Object.keys(e.latLng)[0]);
+  //afficher le nom/ initial de l'école dans le champ region
+
+});
 }
 var defineCircle = function(center, radius){
   return {
@@ -168,10 +266,9 @@ var defineRectangle = function(bounds){
    fillOpacity: 0.35,
  };
 }
-var inRange = function ( oCenter, nDistance )
+var inRange = function ( oCenter, nDistance ) //obj Google / numeric
 {
   aKots = [];
-  
   var options = defineCircle(oCenter, nDistance);
   cityCircle.setOptions( options );
 
@@ -181,38 +278,23 @@ var inRange = function ( oCenter, nDistance )
    //console.log(oKots[i].id+boundd.contains(new google.maps.LatLng(oKots[i].lat,oKots[i].lng)));
    if(!boundd.contains(new google.maps.LatLng(oKots[i].lat,oKots[i].lng))){
     gMarkerArrayKot[i].setMap(null);
-    //console.log(gMarkerArrayKot[i]);
-    //clearMarkers();
 
   }
   else
   {
     aKots.push(oKots[i]);
-    //showMarkers();
     gMarkerArrayKot[i].setMap( gMap );
     gMap.fitBounds (boundd);
   }
 }
 $('#listKot').attr('value',JSON.stringify(aKots));
 }
-
-var clearMarkers = function() {
-  setAllMap(null);
-}
-function setAllMap(map) {
-  for (var i = 0; i < gMarkerArrayKot.length; i++) {
-    gMarkerArrayKot[i].setMap(map);
-  }
-}
-function showMarkers() {
-  setAllMap(gMap);
-}
 var displayGoogleMap = function (){
 
   var aMapOptions = {
     disableDefaultUI:true,
     scrollwheel:false,
-    zoom: 7,
+    zoom: 8,
     mapTypeId: google.maps.MapTypeId.ROADMAP,
     center:new google.maps.LatLng(50.5,4)
   }
@@ -270,6 +352,7 @@ var getCity = function(sPosition,sDistance){
       gMarker.setMap( gMap );
 
       drawCircle( center , sDistance );
+
     }
     else if(sStatus ===google.maps.GeocoderStatus.ZERO_RESULTS)
     {
@@ -280,6 +363,6 @@ var getCity = function(sPosition,sDistance){
     }
   })
 }
-
 }
+
 }).call(this,jQuery);

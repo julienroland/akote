@@ -30,21 +30,21 @@ Activité(s) - Dernière(s) visite(s) - dernier(s) message(s)
 <p>{{('Rechercher par rapport à :')}}</p>
 
 <?php  var_dump(Session::get('ancienneRechercheRapide'));?>
->
-{{ Form::open(array('url' => 'recherche/rapide/' )) }}
+
+{{ Form::open(array('url' => 'recherche/rapide/','id'=>'rapide' )) }}
 
 
 {{Form::label('aucun','Aucun filtre')}}
-{{Form::radio('type','aucun',Session::get('ancienneRechercheRapide[\'aucun\']','true'),array('id'=>'aucun'))}}
+{{Form::radio('type','aucun',Session::get('ancienneRechercheRapide[\'aucun\']',true),array('id'=>'aucun'))}}
 
 {{Form::label('ecole','Une école')}}
-{{Form::radio('type','ecole',Session::get('ancienneRechercheRapide[\'ecole\']','false'),array('id'=>'ecole'))}}
+{{Form::radio('type','ecole',Session::get('ancienneRechercheRapide[\'ecole\']',false),array('id'=>'ecole'))}}
 
 {{Form::label('ville','Une ville')}}
-{{Form::radio('type','ville',Session::get('ancienneRechercheRapide[\'ville\']','false'),array('id'=>'ville'))}}
+{{Form::radio('type','ville',Session::get('ancienneRechercheRapide[\'ville\']',false),array('id'=>'ville'))}}
 
-{{Form::label('kot','Un kot')}}
-{{Form::radio('type','kot',Session::get('ancienneRechercheRapide[\'kot\']','false'),array('id'=>'kot'))}}
+<!-- {{Form::label('kot','Un kot')}}
+{{Form::radio('type','kot',Session::get('ancienneRechercheRapide[\'kot\']','false'),array('id'=>'kot'))}} -->
 
 
 {{ Form::label('loyer_max','Loyer MAX') }}
@@ -73,11 +73,14 @@ Activité(s) - Dernière(s) visite(s) - dernier(s) message(s)
 
 }}
 <div id="gmap"></div>
-{{Form::label('map','Indiquez l\'adresse')}}
-{{Form::text('zone',Session::get('ancienneRechercheRapide')['zone'],array('id'=>'map','placeholder'=>'Rue code postal,ville'))}}
+{{Form::label('map','Indiquez l\'adresse',array('class'=>'type'))}}
+{{Form::text('zone',Session::get('ancienneRechercheRapide')['zone'],array('id'=>'map','class'=>'type','placeholder'=>'Rue code postal,ville'))}}
+
 {{Form::label('distance','Indiquez le rayon du filtre (celui-ci est en mètre)')}}
 {{Form::text('distance',Session::get('ancienneRechercheRapide')['distance'],array('id'=>'distance','placeholder'=>'ex : 1000 pour 1km'))}}
+
 {{Form::hidden('coords','',array('id'=>'coords'))}}
+
 {{ Form::button('Filtrer',array('id'=>'filtrer')) }}
 @if(Auth::check())
 {{Form::label('enregistrer','Enregistrer la recherche')}}
