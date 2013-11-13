@@ -7,6 +7,9 @@
 @if(isset($message))
 <p>{{$message}}</p>
 @endif
+@if(isset($validatorMessage))
+<p>{{$validatorMessage}}</p>
+@endif
 @if(Auth::check())
 Activité(s) - Dernière(s) visite(s) - dernier(s) message(s)
 @else
@@ -43,35 +46,7 @@ Activité(s) - Dernière(s) visite(s) - dernier(s) message(s)
 {{Form::label('ville','Une ville')}}
 {{Form::radio('type','ville',Session::get('ancienneRechercheRapide[\'ville\']',false),array('id'=>'ville'))}}
 
-<!-- {{Form::label('kot','Un kot')}}
-	{{Form::radio('type','kot',Session::get('ancienneRechercheRapide[\'kot\']','false'),array('id'=>'kot'))}} -->
 
-
-	{{ Form::label('loyer_max','Loyer MAX') }}
-	{{ Form::select('loyer_max',array(
-		'100'=>'100',
-		'200'=>'200'
-		),Session::get('ancienneRechercheRapide')['loyer_max'])
-
-	}}
-
-	{{ Form::label('loyer_min','Loyer MIN') }}
-
-	{{ Form::select('loyer_min', array(
-		'100'=>'100',
-		'200'=>'200'
-		),Session::get('ancienneRechercheRapide')['loyer_min']);
-
-	}}
-
-	{{ Form::label('charge','Charges') }}
-
-	{{ Form::select('charge', array(
-		'Comprise',
-		'non-comprise'
-		),Session::get('ancienneRechercheRapide')['charges']);
-
-	}}
 	<div id="gmap"></div>
 	{{Form::label('map','Indiquez l\'adresse',array('class'=>'type'))}}
 	{{Form::text('zone',Session::get('ancienneRechercheRapide[\'zone\']','test'),array('id'=>'map','class'=>'type','placeholder'=>'Rue code postal,ville'))}}

@@ -41,10 +41,9 @@
       }
     });*/
 
-
-
-  ajaxAllKot();
   ajaxAllEcole();
+  ajaxAllKot();
+
   actionChangeType();
   $('#rapide input').on("click", actionChangeType);
   var options = {
@@ -57,7 +56,7 @@
 });
   var autoriseFiltre = function( sCachet )
   {
-    
+
     $('#filtrer').click(function(){
       var sDistanceValue = document.getElementById('distance').value;
 
@@ -89,23 +88,24 @@
 
       if($.isNumeric(sDistanceValue))
       {
-        var nDistanceValueOk = sDistanceValue;
-      }
-      else
-      {
-        var nDistanceValueOk = 0;
-      }
-      var sCityValue = document.getElementById('map').value;
+       nDistanceValueOk = sDistanceValue;
+     }
+     else
+     {
+       nDistanceValueOk = 0;
+     }
+     var sCityValue = document.getElementById('map').value;
 
-      if( sCachet === 'ville')
-      {
-        getCity( sCityValue , nDistanceValueOk );
-      }
-      else if( sCachet === 'ecole')
-      {
-        actionEcoleClick( nDistanceValueOk );
-      }
-      actionChangeType ( sCityValue, nDistanceValueOk);
+     if( sCachet === 'ville')
+     {
+      getCity( sCityValue , nDistanceValueOk );
+    }
+    else if( sCachet === 'ecole')
+    {
+      actionEcoleClick( nDistanceValueOk );
+    }
+    actionChangeType ( sCityValue, nDistanceValueOk);
+
    // ajaxAllKot();
  });
   }
@@ -139,6 +139,7 @@
     success: function ( oResponse ){
       oKots = oResponse.data;
       createMarkerKot(oKots);
+      console.log('ajaxKot');
     }
   })
  }
@@ -150,6 +151,8 @@
     success: function ( oResponse ){
       oEcoles= oResponse.data;
       createMarkerEcole(oEcoles);
+      console.log('ajaxEcole');
+
     }
   })
  }
@@ -212,12 +215,10 @@ var drawMarkerEcole = function ( nLat , nLng, sAdresse , icon)
 
   gMarkerArrayEcole.push(gMarkerKot);
 
-}
+ // actionEcoleClick();
+ google.maps.event.addListener(gMarkerEcole,'click',function( e ){
 
-var actionEcoleClick = function( nDistance ){
-
-  google.maps.event.addListener(gMarkerEcole,'click',function(e) {
-    sNom = [];
+   sNom = [];
     //centrer sur l'école
     gMap.setZoom(12);
     gMap.panTo(gMarkerEcole.getPosition());
@@ -245,10 +246,11 @@ var actionEcoleClick = function( nDistance ){
 
     }
   }
-
-  //console.log(e.latLng.lat === sNom.lat );
-
 });
+
+}
+
+var actionEcoleClick = function( nDistance ){
   //filtrer les kots en fonction d'un rayon
    //afficher le cercle
    
@@ -332,6 +334,7 @@ var drawCircle = function(type , oCenter,sDistance){
 
 
 }
+
 var getCity = function(sPosition,sDistance){
  var nDistance = Number(sDistance);
 

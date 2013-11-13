@@ -17,15 +17,15 @@ class RechercheController extends BaseController {
 
 		$formData = array(
 			'type' =>Input::get('type'),
-			'loyer_max' => Input::get('loyer_max'),
-			'loyer_min' => Input::get('loyer_min'),
-			'charges' => Input::get('charge')
+			// 'loyer_max' => Input::get('loyer_max'),
+			// 'loyer_min' => Input::get('loyer_min'),
+			// 'charges' => Input::get('charge')
 			);
 		$formRules = array(
 			'type' =>'required',
-			'loyer_max' => 'required',
-			'loyer_min' => 'required',
-			'charges' => 'required'
+			// 'loyer_max' => 'required',
+			// 'loyer_min' => 'required',
+			// 'charges' => 'required'
 			);
 
 		$validator = Validator::make($formData, $formRules);
@@ -33,7 +33,7 @@ class RechercheController extends BaseController {
 		if($validator->fails())
 		{
 			$messages = $validator->messages();
-			return Redirect::to('/')->with('validatorMessge',$messages);
+			return Redirect::to('/')->with('validatorMessage',$messages);
 		}
 		$type=Input::get('type');
 
@@ -65,9 +65,9 @@ class RechercheController extends BaseController {
 			$kot=true;
 			$ecole = false;
 		}
-		$loyerMax=Input::get('loyer_max');
-		$loyerMin=Input::get('loyer_min');
-		$charges=Input::get('charge');
+		// $loyerMax=Input::get('loyer_max');
+		// $loyerMin=Input::get('loyer_min');
+		// $charges=Input::get('charge');
 		$zone=Input::get('zone');
 		$distance=Input::get('distances');
 
@@ -75,10 +75,9 @@ class RechercheController extends BaseController {
 			'ville'=>$ville,
 			'aucun'=>$aucun,
 			'ecole'=>$ecole,
-			'kot'=>$kot,
-			'loyer_max'=>$loyerMax,
-			'loyer_min'=>$loyerMin,
-			'charges'=>$charges,
+			// 'loyer_max'=>$loyerMax,
+			// 'loyer_min'=>$loyerMin,
+			// 'charges'=>$charges,
 			'zone'=>$zone,
 			'distance'=>$distance
 			);
@@ -98,17 +97,27 @@ class RechercheController extends BaseController {
 				{
 					$nom = 'recherchePerso';
 				}	
-
-				$rechercheRapide = DB::table('rechercheRapideEnregistre')
-				->insert(array(
-					'user_id'=>Session::get('user')['id'],
-					'rechercheEnregistre'=>json_encode($arrayRechercheRapide),
-					'nom' =>$nom						
-					)
-				);
-				if(!$rechercheRapide){
-					return Redirect::to('/')->with('bddMessage','Erreur lors de l\'ajout à la base de donnée');
+				$countRechercheRapide = DB::table('rechercheRapideEnregistre')
+				->count();
+				if($countRechercheRapide >= 5){
+					alert('Vous avez déjà'.$countRechercheRapide.' recherche rapide enregistré, vous pouvez modifier celle-ci sur votre profil');
 				}
+				else
+				{
+
+					$rechercheRapide = DB::table('rechercheRapideEnregistre')
+					->insert(array(
+						'user_id'=>Session::get('user')['id'],
+						'rechercheEnregistre'=>json_encode($arrayRechercheRapide),
+						'nom' =>$nom						
+						)
+					);
+					if(!$rechercheRapide){
+						return Redirect::to('/')->with('bddMessage','Erreur lors de l\'ajout à la base de donnée');
+					}
+
+				}
+				
 			}//end enregistrement recherche
 		}
 		
@@ -159,7 +168,6 @@ class RechercheController extends BaseController {
 			{
 				$kot = json_decode(Input::get('listKot')); //Champ de la ville
 				Session::put('kotFromGoogle',$kot);
-				dd('fck');
 				return View::make('recherche.type.ville')->with('listeKot',Session::get('kotFromGoogle'));
 			}
 			else
