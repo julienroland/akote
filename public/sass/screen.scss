@@ -1,7 +1,118 @@
-
-@import "compass/reset";
 @import "compass";
+@import "normalize";
+@import "variables";
+@import "mixin";
 
+body{
+	background-color: $grey;
+	color:$grey;
+	font-family: "Helvetica Neue",Arial,Helvetica,Verdana,sans-serif;
+	font-size: 15px;
+	line-height: 150%;
+	-webkit-font-smoothing:antialiased;
+}
+a{
+	text-decoration: none;
+	font-weight: 500;
+	color:$greyA;
+	&:hover{
+		color:$greyH
+	}
+}
+.container{
+	background-color: #FFF;
+	max-width:$mw;
+	@include c( 12 );
+	margin: auto;
+	&:after{
+		@include clear();
+	}
+	padding-bottom: 5em;
+}
+.logo{
+	display:inline-block;
+	text-indent: -9999999px;
+	position:absolute;
+	a{
+		color:white;
+	}
+
+}
+.banner{
+	display:block;
+	width:100%;
+	min-height: 300px;
+	background-color: $blue;
+	color:#FFF;
+	position:relative;
+	margin-bottom: 1em;
+}
+.mainNav{
+	position:absolute;
+	bottom:0;
+	display:block;
+	width:100%;
+	height:50px;
+	background-color:$greyL;
+	color:#FFF;
+	overflow: hidden;
+
+	a{
+		color:#FFF;
+	}
+	ul{
+		@include horizontal-list();
+		max-width: $mw;
+		box-sizing:border-box;
+		height:50px;
+
+		li{
+			background-color: $greyD;
+			margin-right: 1em;
+			min-width: 150px;
+			float:right;
+			
+			&:hover,&:focus,&:active{
+				background-color: $greyDH;
+			}
+			a{
+				display:inline-block;
+				width:100%;
+				box-sizing:border-box;
+				text-align: center;
+				padding:1em;
+				height:100%;
+			}
+		}
+		li:first-child{
+			margin-right: 0;
+			
+		}
+	}
+}
+.main{
+	@include c( 12 );
+
+	padding:0 1em;
+}
+h1,h2,h3,h4,h5,h6{
+	font-weight: 700;
+	color:$blue;
+
+}
+h1{
+	font-size: 3em;
+}h2{
+	font-size: 2.5em;
+}h3{
+	font-size: 2em;
+}h4{
+	font-size: 1.8em;
+}h5{
+	font-size: 1.5em;
+}h6{
+	font-size: 1.2em;
+}
 #gmap{
 	height:400px;
 }

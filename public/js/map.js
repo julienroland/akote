@@ -139,7 +139,6 @@
     success: function ( oResponse ){
       oKots = oResponse.data;
       createMarkerKot(oKots);
-      console.log('ajaxKot');
     }
   })
  }
@@ -151,8 +150,6 @@
     success: function ( oResponse ){
       oEcoles= oResponse.data;
       createMarkerEcole(oEcoles);
-      console.log('ajaxEcole');
-
     }
   })
  }
