@@ -35,10 +35,10 @@ Activité(s) - Dernière(s) visite(s) - dernier(s) message(s)
 
 
 {{Form::label('aucun','Aucun filtre')}}
-{{Form::radio('type','aucun',Session::get('ancienneRechercheRapide[\'aucun\']',true),array('id'=>'aucun'))}}
+{{Form::radio('type','aucun',Session::get('ancienneRechercheRapide[\'aucun\']',false),array('id'=>'aucun'))}}
 
 {{Form::label('ecole','Une école')}}
-{{Form::radio('type','ecole',Session::get('ancienneRechercheRapide[\'ecole\']',false),array('id'=>'ecole'))}}
+{{Form::radio('type','ecole',Session::get('ancienneRechercheRapide[\'ecole\']',true),array('id'=>'ecole'))}}
 
 {{Form::label('ville','Une ville')}}
 {{Form::radio('type','ville',Session::get('ancienneRechercheRapide[\'ville\']',false),array('id'=>'ville'))}}
@@ -74,7 +74,7 @@ Activité(s) - Dernière(s) visite(s) - dernier(s) message(s)
 }}
 <div id="gmap"></div>
 {{Form::label('map','Indiquez l\'adresse',array('class'=>'type'))}}
-{{Form::text('zone',Session::get('ancienneRechercheRapide')['zone'],array('id'=>'map','class'=>'type','placeholder'=>'Rue code postal,ville'))}}
+{{Form::text('zone',Session::get('ancienneRechercheRapide[\'zone\']','test'),array('id'=>'map','class'=>'type','placeholder'=>'Rue code postal,ville'))}}
 
 {{Form::label('distance','Indiquez le rayon du filtre (celui-ci est en mètre)')}}
 {{Form::text('distance',Session::get('ancienneRechercheRapide')['distance'],array('id'=>'distance','placeholder'=>'ex : 1000 pour 1km'))}}
@@ -91,7 +91,7 @@ Activité(s) - Dernière(s) visite(s) - dernier(s) message(s)
 
 {{Form::hidden('listKot','',array('id'=>'listKot'))}}
 
-{{Form::submit('envoye')}}
+{{Form::submit('envoye',array('class'=>'btn btn-primary'))}}
 {{Form::close()}}
 <!-- test si la session ancienne recherche existe -->
 {{ $errors->first('url','<div class="error">:message</div>') }} 

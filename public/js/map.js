@@ -8,9 +8,12 @@
   gMarkerKot,
   gMarkerEcole,
   oKots,
+  nDistanceValueOk,
   oEcoles,
   aKots = [],
-  aNom = [],
+  oEcole = [],
+  gEcole = new google.maps.LatLng(),
+  sNom = [],
   sCachet,
   nDistanceValueOk,
   cityCircle = new google.maps.Circle(),
@@ -28,13 +31,13 @@
   $(function(){
     $(window).load(function(){
       if($('#rapide input:checked').val()==='ville'){
-        console.log('ville');
+
       }
       else if($('#rapide input:checked').val()==='ecole'){
-        console.log('ecole');
+
       } 
       else if($('#rapide input:checked').val()==='aucun'){
-        console.log('tout');
+
       }
     });
 
@@ -42,7 +45,7 @@
 
     ajaxAllKot();
     ajaxAllEcole();
-
+    actionChangeType();
     var options = {
       types: ['(cities)'],
       componentRestrictions: {country:"be"}
@@ -53,16 +56,17 @@
   });
   var autoriseFiltre = function( sCachet )
   {
+    console.log(sCachet);
     $('#filtrer').click(function(){
       var sDistanceValue = document.getElementById('distance').value;
 
       if($.isNumeric(sDistanceValue))
       {
-        var nDistanceValueOk = sDistanceValue;
+        nDistanceValueOk = sDistanceValue;
       }
       else
       {
-        var nDistanceValueOk = 0;
+         nDistanceValueOk = 0;
       }
       var sCityValue = document.getElementById('map').value;
 
@@ -74,7 +78,7 @@
       {
         actionEcoleClick( nDistanceValueOk );
       }
-      console.log(sCachet);
+      
 
     }); 
 
@@ -211,60 +215,57 @@ var drawMarkerEcole = function ( nLat , nLng, sAdresse , icon)
 
 }
 
-var actionEcoleClick = function(){
+var actionEcoleClick = function( nDistance ){
+
   google.maps.event.addListener(gMarkerEcole,'click',function(e) {
+    sNom = [];
     //centrer sur l'école
-    console.log(e);
-    console.log(oEcoles);
     gMap.setZoom(12);
     gMap.panTo(gMarkerEcole.getPosition());
-  //recuperer la lat/lng : //filtrer les kots en fonction d'un rayon
-  var sNom =[];
+  //recuperer la lat/lng 
+  //récuperer les valeurs dans array
   for(var i=0;i<=oEcoles.length-1;i++)
   {
     sNom = {latlng : new google.maps.LatLng( oEcoles[i].lat , oEcoles[i].lng ),nom:oEcoles[i].nom};
-    aNom.push(sNom); 
+    oEcole.push(sNom); 
 
   }
+  
+  for (var i =0; i<=oEcole.length-1;i++){ 
+  //tester si un kot BDD === au kot clické
+
+  if( e.latLng.lat() === oEcole[i].latlng.lat() && e.latLng.lng() === oEcole[i].latlng.lng())
+  {
+      //afficher le nom dans l'input
+
+      $('.type').attr('value',oEcole[i].nom);
+
+      //enregistrer la valeur
+
+      gEcole = new google.maps.LatLng( oEcole[i].latlng.lat() , oEcole[i].latlng.lng());
+
+    }
+  }
+ 
   //console.log(e.latLng.lat === sNom.lat );
 
-  if( e.latLng.lat === sNom.lat && e.latLng.lng === sNom.lng)
-  {
-    
-    console.log(sNom);
-  }
-  console.log(aNom);
-
-  //console.log(nDistanceValueOk);
- // inRange( e.latLng , )
-  //console.log(Object.keys(e.latLng)[0]);
-  //afficher le nom/ initial de l'école dans le champ region
-
 });
+  //filtrer les kots en fonction d'un rayon
+   //afficher le cercle
+   
+   drawCircle( 'ecole', gEcole , nDistanceValueOk );
 }
-var defineCircle = function(center, radius){
+var defineCircle = function(center, radius, sColor){
   return {
-    strokeColor: '#FF0000',
+    strokeColor: sColor,
     strokeOpacity: 0.8,
     strokeWeight: 2,
-    fillColor: '#FF0000',
+    fillColor: sColor,
     fillOpacity: 0.35,
     map: gMap,
     center: center,
     radius: radius
   };
-}
-var defineRectangle = function(bounds){
-
-  return {
-   bounds: bounds,
-   map: gMap,
-   strokeColor: "#FF0000",
-   strokeOpacity: 0.8,
-   strokeWeight: 2,
-   fillColor: "#FF0000",
-   fillOpacity: 0.35,
- };
 }
 var inRange = function ( oCenter, nDistance ) //obj Google / numeric
 {
@@ -301,22 +302,30 @@ var displayGoogleMap = function (){
   gMap = new google.maps.Map(document.getElementById('gmap'),aMapOptions);
 
 }
-var drawCircle = function(oCenter,sDistance){
+var drawCircle = function(type , oCenter,sDistance){
   if( cityCircle )
   {
     cityCircle.setMap( null );
   }
+  console.log(sDistance);
   nDistance = Number(sDistance);
 
   var oCenterCity = oCenter;
   var oCircleRangeN = gSpherical.computeOffset(oCenterCity, nDistance, 0); //marker limitant au NORD
-
-  gMarker.setPosition( oCenterCity );
-  gMarker.setMap( gMap );
+  
+  if(type ==='ville'){
+    gMarker.setPosition( oCenterCity );
+    gMarker.setMap( gMap );
+    var sColor = '#FF0000';
+  }
+  else(type ==='ecole')
+  {
+    var sColor = '#0000FF';
+  }
 
   var nDistance = google.maps.geometry.spherical.computeDistanceBetween(oCenterCity, oCircleRangeN);
 
-  var aCircleOptions = defineCircle(oCenter, nDistance);
+  var aCircleOptions = defineCircle(oCenter, nDistance, sColor);
 
   cityCircle.setOptions(aCircleOptions);
 
@@ -343,15 +352,14 @@ var getCity = function(sPosition,sDistance){
       gMap.setZoom( 14 );
       gMap.panTo ( center );
 
-      var sCoords = center;
-      $('#coords').attr('value',sCoords);
+      $('#coords').attr('value',center);
 
       var oCircleRangeN = gSpherical.computeOffset(center, nDistance, 360);
 
       gMarker.setPosition( center );
       gMarker.setMap( gMap );
 
-      drawCircle( center , sDistance );
+      drawCircle( 'ville' ,center , sDistance );
 
     }
     else if(sStatus ===google.maps.GeocoderStatus.ZERO_RESULTS)
