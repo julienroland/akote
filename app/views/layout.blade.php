@@ -11,8 +11,10 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 
 	<!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
-	{{ HTML::style('/css/screen.css') }}
-	<script src="js/vendor/modernizr-2.6.2.min.js"></script>
+      {{ HTML::style('/css/screen.css') }}
+      {{ HTML::script('js/vendor/modernizr-2.6.2.min.js') }}
+      {{ HTML::script('js/jquery-ck.js') }}
+
 </head>
 <body>
         <!--[if lt IE 7]>
@@ -57,8 +59,8 @@
             	<li>Contactez-nous</li>
             </ul>
 
-           </script>
-            <script>window.jQuery || document.write('<script src="js/vendor/jquery-1.10.2.min.js"><\/script>')</script>
+
+
 
             <!-- Google Analytics: change UA-XXXXX-X to be your site's ID. -->
             <script>
@@ -69,5 +71,5 @@
             	r.parentNode.insertBefore(e,r)}(window,document,'script','ga'));
             	ga('create','UA-XXXXX-X');ga('send','pageview');
             </script>
-        </body>
-        </html>
+      </body>
+      </html>

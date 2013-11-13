@@ -121,25 +121,45 @@ class RechercheController extends BaseController {
 			{
 				$kot = DB::table('kot')->get();
 			}
-			return View::make('recherche.type.aucun')->with('listeKot',$kot);	
-			
+			return View::make('recherche.type.aucun')->with('listeKot',$kot);		
 		}
-		elseif(Input::get('type')==='kot')
-		{
-			$kot = DB::table('kot')->orderBy('prix')->get();
-			return View::make('recherche.type.kot')->with('listeKot',$kot);
-		}
+
 		elseif(Input::get('type')==='ecole')
 		{
-			$kot = DB::table('kot')->orderBy('prix')->get();
-			return View::make('recherche.type.ecole')->with('listeKot',$kot);
+			if(!empty(Input::get('listKot')))
+			{
+				$kot = json_decode(Input::get('listKot')); //Champ de l'école
+				Session::put('kotFromGoogle',$kot);
+				return View::make('recherche.type.ville')->with('listeKot',Session::get('kotFromGoogle'));
+			}
+			else
+			{
+				if(!empty(Input::get('zone'))){
+					$ecole = strtolower(is_string(Input::get('zone')));
+					
+					$kot = DB::table('kot')->get();
+					
+					if(!$kot)
+					{
+						$kot = DB::table('kot')->orderBy('region')->get();
+					}
+					return View::make('recherche.type.ecole')->with(array('listeKot'=>$kot,'message'=>'Aucun résultat ne correspond à votre séléection, voici les kots les plus proches.'));
+				}
+				else
+				{
+					$kot = DB::table('kot')->orderBy('prix')->get();
+					return View::make('recherche.type.ecole')->with(array('listeKot'=>$kot,'message'=>'Vous n\'avez ciblé aucune école précédemment, vous pouvez le faire '.link_to_route('showEcoleMap','maintenant')));
+				}
+			}
 		}
+
 		elseif(Input::get('type')==='ville')
 		{
 			if(!empty(Input::get('listKot')))
 			{
 				$kot = json_decode(Input::get('listKot')); //Champ de la ville
 				Session::put('kotFromGoogle',$kot);
+				dd('fck');
 				return View::make('recherche.type.ville')->with('listeKot',Session::get('kotFromGoogle'));
 			}
 			else
@@ -147,7 +167,6 @@ class RechercheController extends BaseController {
 				if(!empty(Input::get('zone'))){
 					$region = strtolower(is_string(Input::get('zone')));
 					$region = ucwords($region);
-					//$region = DB::table('kot')->orderBy('prix')->where('region',$region)->get();
 
 					$kot = DB::table('kot')->orderBy('prix')->where('region',$region)->get();
 					

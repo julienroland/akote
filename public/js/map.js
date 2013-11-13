@@ -29,7 +29,7 @@
   gPlaceAutoComplete;
   
   $(function(){
-    $(window).load(function(){
+   /* $(window).load(function(){
       if($('#rapide input:checked').val()==='ville'){
 
       }
@@ -39,24 +39,25 @@
       else if($('#rapide input:checked').val()==='aucun'){
 
       }
-    });
+    });*/
 
-    $('#rapide input').on("click", actionChangeType);
 
-    ajaxAllKot();
-    ajaxAllEcole();
-    actionChangeType();
-    var options = {
-      types: ['(cities)'],
-      componentRestrictions: {country:"be"}
-    };
-    gPlaceAutoComplete = new google.maps.places.Autocomplete(input,options);
 
-    displayGoogleMap();
-  });
+  ajaxAllKot();
+  ajaxAllEcole();
+  actionChangeType();
+  $('#rapide input').on("click", actionChangeType);
+  var options = {
+    types: ['(cities)'],
+    componentRestrictions: {country:"be"}
+  };
+  gPlaceAutoComplete = new google.maps.places.Autocomplete(input,options);
+
+  displayGoogleMap();
+});
   var autoriseFiltre = function( sCachet )
   {
-    console.log(sCachet);
+    
     $('#filtrer').click(function(){
       var sDistanceValue = document.getElementById('distance').value;
 
@@ -66,21 +67,21 @@
       }
       else
       {
-         nDistanceValueOk = 0;
-      }
-      var sCityValue = document.getElementById('map').value;
+       nDistanceValueOk = 0;
+     }
+     var sCityValue = document.getElementById('map').value;
 
-      if( sCachet === 'ville')
-      {
-        getCity( sCityValue , nDistanceValueOk );
-      }
-      else if( sCachet === 'ecole')
-      {
-        actionEcoleClick( nDistanceValueOk );
-      }
-      
+     if( sCachet === 'ville')
+     {
+      getCity( sCityValue , nDistanceValueOk );
+    }
+    else if( sCachet === 'ecole')
+    {
+      actionEcoleClick( nDistanceValueOk );
+    }
 
-    }); 
+
+  }); 
 
     $('#map').change(function(){
 
@@ -133,11 +134,11 @@
 
   var ajaxAllKot = function(){
    $.ajax({
-    dataType: "json",
+    dataType:"json",
     url:"dataKot",
     success: function ( oResponse ){
       oKots = oResponse.data;
-      createMarkerKot(oResponse.data);
+      createMarkerKot(oKots);
     }
   })
  }
@@ -148,7 +149,7 @@
     url:"dataEcole",
     success: function ( oResponse ){
       oEcoles= oResponse.data;
-      createMarkerEcole(oResponse.data);
+      createMarkerEcole(oEcoles);
     }
   })
  }
@@ -211,8 +212,6 @@ var drawMarkerEcole = function ( nLat , nLng, sAdresse , icon)
 
   gMarkerArrayEcole.push(gMarkerKot);
 
-  actionEcoleClick();
-
 }
 
 var actionEcoleClick = function( nDistance ){
@@ -246,7 +245,7 @@ var actionEcoleClick = function( nDistance ){
 
     }
   }
- 
+
   //console.log(e.latLng.lat === sNom.lat );
 
 });
@@ -254,8 +253,8 @@ var actionEcoleClick = function( nDistance ){
    //afficher le cercle
    
    drawCircle( 'ecole', gEcole , nDistanceValueOk );
-}
-var defineCircle = function(center, radius, sColor){
+ }
+ var defineCircle = function(center, radius, sColor){
   return {
     strokeColor: sColor,
     strokeOpacity: 0.8,
@@ -274,6 +273,7 @@ var inRange = function ( oCenter, nDistance ) //obj Google / numeric
   cityCircle.setOptions( options );
 
   var boundd = cityCircle.getBounds();
+
   for(var i=0;i<=oKots.length-1;i++)
   {
    //console.log(oKots[i].id+boundd.contains(new google.maps.LatLng(oKots[i].lat,oKots[i].lng)));
@@ -307,7 +307,6 @@ var drawCircle = function(type , oCenter,sDistance){
   {
     cityCircle.setMap( null );
   }
-  console.log(sDistance);
   nDistance = Number(sDistance);
 
   var oCenterCity = oCenter;

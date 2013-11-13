@@ -44,134 +44,133 @@ Activité(s) - Dernière(s) visite(s) - dernier(s) message(s)
 {{Form::radio('type','ville',Session::get('ancienneRechercheRapide[\'ville\']',false),array('id'=>'ville'))}}
 
 <!-- {{Form::label('kot','Un kot')}}
-{{Form::radio('type','kot',Session::get('ancienneRechercheRapide[\'kot\']','false'),array('id'=>'kot'))}} -->
+	{{Form::radio('type','kot',Session::get('ancienneRechercheRapide[\'kot\']','false'),array('id'=>'kot'))}} -->
 
 
-{{ Form::label('loyer_max','Loyer MAX') }}
-{{ Form::select('loyer_max',array(
-	'100'=>'100',
-	'200'=>'200'
-	),Session::get('ancienneRechercheRapide')['loyer_max'])
+	{{ Form::label('loyer_max','Loyer MAX') }}
+	{{ Form::select('loyer_max',array(
+		'100'=>'100',
+		'200'=>'200'
+		),Session::get('ancienneRechercheRapide')['loyer_max'])
 
-}}
+	}}
 
-{{ Form::label('loyer_min','Loyer MIN') }}
+	{{ Form::label('loyer_min','Loyer MIN') }}
 
-{{ Form::select('loyer_min', array(
-	'100'=>'100',
-	'200'=>'200'
-	),Session::get('ancienneRechercheRapide')['loyer_min']);
+	{{ Form::select('loyer_min', array(
+		'100'=>'100',
+		'200'=>'200'
+		),Session::get('ancienneRechercheRapide')['loyer_min']);
 
-}}
+	}}
 
-{{ Form::label('charge','Charges') }}
+	{{ Form::label('charge','Charges') }}
 
-{{ Form::select('charge', array(
-	'Comprise',
-	'non-comprise'
-	),Session::get('ancienneRechercheRapide')['charges']);
+	{{ Form::select('charge', array(
+		'Comprise',
+		'non-comprise'
+		),Session::get('ancienneRechercheRapide')['charges']);
 
-}}
-<div id="gmap"></div>
-{{Form::label('map','Indiquez l\'adresse',array('class'=>'type'))}}
-{{Form::text('zone',Session::get('ancienneRechercheRapide[\'zone\']','test'),array('id'=>'map','class'=>'type','placeholder'=>'Rue code postal,ville'))}}
+	}}
+	<div id="gmap"></div>
+	{{Form::label('map','Indiquez l\'adresse',array('class'=>'type'))}}
+	{{Form::text('zone',Session::get('ancienneRechercheRapide[\'zone\']','test'),array('id'=>'map','class'=>'type','placeholder'=>'Rue code postal,ville'))}}
 
-{{Form::label('distance','Indiquez le rayon du filtre (celui-ci est en mètre)')}}
-{{Form::text('distance',Session::get('ancienneRechercheRapide')['distance'],array('id'=>'distance','placeholder'=>'ex : 1000 pour 1km'))}}
+	{{Form::label('distance','Indiquez le rayon du filtre (celui-ci est en mètre)')}}
+	{{Form::text('distance',Session::get('ancienneRechercheRapide')['distance'],array('id'=>'distance','placeholder'=>'ex : 1000 pour 1km'))}}
 
-{{Form::hidden('coords','',array('id'=>'coords'))}}
+	{{Form::hidden('coords','',array('id'=>'coords'))}}
 
-{{ Form::button('Filtrer',array('id'=>'filtrer')) }}
-@if(Auth::check())
-{{Form::label('enregistrer','Enregistrer la recherche')}}
-{{Form::checkbox('enregistrer')}}
-{{Form::label('enregistrerNom','Donnez un nom à votre recherche enregistré (20 charactères maximun)')}}
-{{Form::text('enregistrerNom','',array('placeholder'=>'ex: recherche kot liège'))}}
-@endif
+	{{ Form::button('Filtrer',array('id'=>'filtrer')) }}
+	@if(Auth::check())
+	{{Form::label('enregistrer','Enregistrer la recherche')}}
+	{{Form::checkbox('enregistrer')}}
+	{{Form::label('enregistrerNom','Donnez un nom à votre recherche enregistré (20 charactères maximun)')}}
+	{{Form::text('enregistrerNom','',array('placeholder'=>'ex: recherche kot liège'))}}
+	@endif
 
-{{Form::hidden('listKot','',array('id'=>'listKot'))}}
+	{{Form::hidden('listKot','',array('id'=>'listKot'))}}
 
-{{Form::submit('envoye',array('class'=>'btn btn-primary'))}}
-{{Form::close()}}
-<!-- test si la session ancienne recherche existe -->
-{{ $errors->first('url','<div class="error">:message</div>') }} 
-
-
-<p>{{link_to_route('showDetaillee','Détaillée')}}</p>
-<fieldset>
-
-	<p>{{('Localiser : Une école, une ville, un kot')}}</p>
-
-	{{ Form::open(array('detaillee' => 'recherche/detaillee' )) }}
-
-	<fieldset>
-		<legend>{{('Base')}}</legend>
-		{{ Form::label('loyer_max','Loyer MAX') }}
-
-		{{ Form::select('loyer_max', array(
-			'200',
-			'3OO'
-			));
-
-		}}
-	</fieldset>
-
-	<fieldset>
-		<legend>{{('Supplémentaire')}}</legend>
-		{{ Form::label('loyer_max','Loyer MAX') }}
-
-		{{ Form::select('loyer_max', array(
-			'200',
-			'3OO'
-			));
-
-		}}
-	</fieldset>
-
-	<fieldset>
-		<legend>{{('Bâtiment')}}</legend>
-		{{ Form::label('loyer_max','Loyer MAX') }}
-
-		{{ Form::select('loyer_max', array(
-			'200',
-			'3OO'
-			));
-
-		}}
-	</fieldset>
-
-	<fieldset>
-		<legend>{{{('Carte')}}}</legend>
-		{{ Form::label('loyer_max','Loyer MAX') }}
-
-		{{ Form::select('loyer_max', array(
-			'200',
-			'3OO'
-			));
-
-		}}
-	</fieldset>
-
-	{{ Form::submit('Chercher') }}
-
+	{{Form::submit('envoye',array('class'=>'btn btn-primary'))}}
 	{{Form::close()}}
-
+	<!-- test si la session ancienne recherche existe -->
 	{{ $errors->first('url','<div class="error">:message</div>') }} 
 
 
-</fieldset>
-@if(Auth::check())
-{{('Recherche enregistrée')}}
-{{Form::open(array('enregistre'=>'recherche/enregistrée'))}}
+	<p>{{link_to_route('showDetaillee','Détaillée')}}</p>
+	<fieldset>
 
-{{Form::select('mesRecherches',array('toto','titi'))}}
+		<p>{{('Localiser : Une école, une ville, un kot')}}</p>
 
-{{Form::submit('chercher')}}
-{{Form::close()}}
-@endif
-<script src="http://maps.googleapis.com/maps/api/js?key=AIzaSyDHJ3p-sn1Y5tJGrzH9MF5cbR5sdsDmhfg&sensor=false&libraries=places,geometry"></script>
-<script type="text/javascript" src="js/jquery.js"></script>
-<script type="text/javascript" src="js/map.js"></script>
+		{{ Form::open(array('detaillee' => 'recherche/detaillee' )) }}
+
+		<fieldset>
+			<legend>{{('Base')}}</legend>
+			{{ Form::label('loyer_max','Loyer MAX') }}
+
+			{{ Form::select('loyer_max', array(
+				'200',
+				'3OO'
+				));
+
+			}}
+		</fieldset>
+
+		<fieldset>
+			<legend>{{('Supplémentaire')}}</legend>
+			{{ Form::label('loyer_max','Loyer MAX') }}
+
+			{{ Form::select('loyer_max', array(
+				'200',
+				'3OO'
+				));
+
+			}}
+		</fieldset>
+
+		<fieldset>
+			<legend>{{('Bâtiment')}}</legend>
+			{{ Form::label('loyer_max','Loyer MAX') }}
+
+			{{ Form::select('loyer_max', array(
+				'200',
+				'3OO'
+				));
+
+			}}
+		</fieldset>
+
+		<fieldset>
+			<legend>{{{('Carte')}}}</legend>
+			{{ Form::label('loyer_max','Loyer MAX') }}
+
+			{{ Form::select('loyer_max', array(
+				'200',
+				'3OO'
+				));
+
+			}}
+		</fieldset>
+
+		{{ Form::submit('Chercher') }}
+
+		{{Form::close()}}
+
+		{{ $errors->first('url','<div class="error">:message</div>') }} 
 
 
-@stop
+	</fieldset>
+	@if(Auth::check())
+	{{('Recherche enregistrée')}}
+	{{Form::open(array('enregistre'=>'recherche/enregistrée'))}}
+
+	{{Form::select('mesRecherches',array('toto','titi'))}}
+
+	{{Form::submit('chercher')}}
+	{{Form::close()}}
+	@endif
+	<script src="http://maps.googleapis.com/maps/api/js?key=AIzaSyDHJ3p-sn1Y5tJGrzH9MF5cbR5sdsDmhfg&sensor=false&libraries=places,geometry"></script>
+	{{ HTML::script('js/map.js') }}
+
+
+	@stop
