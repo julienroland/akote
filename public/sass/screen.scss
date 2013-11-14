@@ -1,23 +1,148 @@
+@import "compass/reset";
 @import "compass";
-@import "normalize";
+@import "compass/css3";
 @import "variables";
 @import "mixin";
 
 body{
-	background-color: $grey;
+	background-color: $greyL2;
 	color:$grey;
 	font-family: "Helvetica Neue",Arial,Helvetica,Verdana,sans-serif;
-	font-size: 15px;
-	line-height: 150%;
+	font-size: 16px;
+	line-height: 1.5;
 	-webkit-font-smoothing:antialiased;
+	overflow-y:hidden;
 }
 a{
 	text-decoration: none;
 	font-weight: 500;
 	color:$greyA;
-	&:hover{
+	@include single-transition(all,0.5s,ease);
+	&:hover,&:focus{
 		color:$greyH
 	}
+}
+p{
+	text-align: justify;
+}
+ul{
+	list-style-type: none;
+}
+.lang{
+	@include horizontal-list();
+	height:24px;
+	text-align: center;
+	ul{
+		height:100%;
+		display:inline-block;
+
+	}
+}
+input{
+	background-color: #FFF;
+	border:2px solid $greyL2;
+	@include border-radius(0.5em);
+	color:black;
+	font-size: 15px;
+	text-align: left;
+	height:30px;
+	margin:0.2em 0 1em 0;
+	outline: none;
+	padding:0.5em;
+	-webkit-appearance: none;
+	box-sizing:border-box;
+	min-width: 100px;
+	&:hover{
+		border:2px solid $greyL2H;
+
+	}
+	&:focus{
+		border:2px solid $blue;
+		-webkit-appearance: none;
+	}
+
+}
+input[type="submit"]{
+	background-color: $blue;
+	border:none;
+	cursor:pointer;
+	text-align: center;
+	color:white;
+	min-width: 150px;
+	@include single-transition(all,0.5s,ease);
+	outline:none;
+	padding:0;
+	&:hover,&:focus{
+		background-color: $blueH;
+	}
+}
+button{
+	@extend input[type="submit"];
+	color:$greyD;
+	padding:0.5em 2em;
+	min-width: 100px;
+	font-size: 15px;
+	@include border-radius(0.5em);
+	margin:1em 0;
+	background-color: $greyL2;
+	&:hover,&:focus{
+		background-color: $greyD;
+		color:#FFF;
+	}
+}
+textarea{
+	@extend input;
+	text-align: left;
+}
+select{
+	margin-right:1em;
+	width:100px;
+	color:$grey;
+}
+select {
+	background: transparent;
+	width: 268px;
+	padding: 5px;
+	font-size: 16px;
+	line-height: 1;
+	border: 2px solid $greyL2;
+	@include border-radius(0.5em);
+	height: 34px;
+	outline:0;
+	-webkit-appearance: none;
+	-moz-appearance: none;
+	appearance: none;
+	background: url(../img/arrow.png) no-repeat 96% center #FFF;
+}
+select:hover{
+	-webkit-appearance: none;
+	-moz-appearance: none;
+	appearance: none;
+	outline:0;
+	border: 2px solid $greyL2H;
+}
+select:focus{
+	-webkit-appearance: none;
+	-moz-appearance: none;
+	appearance: none;
+	outline:0;
+	border: 2px solid $blue;
+}
+::-webkit-input-placeholder {
+	color: $grey;
+
+}
+
+:-moz-placeholder { 
+	color: $grey;  
+}
+
+::-moz-placeholder { 
+	color: $grey;  
+}
+
+:-ms-input-placeholder {  
+	color: $grey;  
 }
 .container{
 	background-color: #FFF;
@@ -71,9 +196,9 @@ a{
 			margin-right: 1em;
 			min-width: 150px;
 			float:right;
-			
+			@include single-transition(all,0.5s,ease);
 			&:hover,&:focus,&:active{
-				background-color: $greyDH;
+				background-color: $greyDH;	
 			}
 			a{
 				display:inline-block;
@@ -92,12 +217,24 @@ a{
 }
 .main{
 	@include c( 12 );
-
+	margin: auto;
 	padding:0 1em;
+}
+.wrapper{
+	width:100%;
+	//padding:1em 1em 0.5em 1em;
+	overflow:hidden;
+	margin: auto;
+	margin-bottom: 3em;
+	box-sizing:border-box;
+	&:after{
+		@include clear();
+	}
 }
 h1,h2,h3,h4,h5,h6{
 	font-weight: 700;
 	color:$blue;
+	margin: 0 0 1em 0;
 
 }
 h1{
@@ -113,6 +250,158 @@ h1{
 }h6{
 	font-size: 1.2em;
 }
+/* INDEX */
+
+.why{
+	@include cfl( 6 );
+
+}
+.help{
+	@include cl( 6 );
+}
+.icoRecherche{
+	text-align: center;
+
+	ul{
+		display:inline-block;
+		width:auto;
+		
+		li{
+			display:block;
+			height:auto;
+			display:inline-block;
+			margin-left: 3em;
+			position:relative;
+
+			&:after{
+				@include clear();
+			}
+			&:hover span,&:focus span{
+				color:$blueH;
+			}
+			&:hover .typeRecherche,&:hover .typeRecherche{
+				background-color:$greyL2H;
+			}
+			.link{
+				display:inline-block;
+				width:100%;
+				a{
+					position:absolute;
+					top:0;
+					display:block;
+					width:100%;
+					height:100%;
+					text-indent: -9999999px;
+
+				}
+
+			}
+			.typeRecherche{
+				margin:1em;
+				margin-bottom: 0;
+				height:110px;
+				width:100px;
+				background-color: $greyL2;
+				@include border-radius(50%);
+				@include single-transition(all,0.5s,ease);
+
+				overflow:hidden;
+
+			}
+			span{
+				font-weight: bold;
+				color:$blue;
+			}
+
+		}
+		li:first-child{
+			margin-right: 3em;
+			margin-left: 0;
+		}
+	}
+	
+
+}
+#rapide{
+	@include cfl( 12 );
+	
+}
 #gmap{
 	height:400px;
+	width:80%;
+	@include cfl( 8 );
+	display:block;
+	border:4px solid $greyL2;
+	box-sizing:border-box;
+	@include border-radius(0.5em);
 }
+.content{
+	width:80%;
+	text-align: center;
+	span{
+		display:inline-block;
+		height:50px;
+		float:left;
+	}
+}
+.type{
+	display:inline-block;
+	text-align: center;
+	
+	
+	height:50px;
+	margin-bottom: 1em;
+	&:after{
+		@include clear();
+	}
+	input[type=radio]:checked + label{
+		background-color: $greyDH;
+	}
+	
+	label{
+		box-sizing:border-box;
+		display:block;
+		width:200px;
+		height:50px;
+		color:#FFF;
+		background-color: $greyD;
+		padding:1em;
+		text-align: center;
+		font-weight: bold;
+		float:left;
+		margin-left: 1em;
+		cursor:pointer;
+		@include single-transition(all,0.5s,ease);
+		&:hover,&:focus{
+			background-color: $greyDH;
+		}
+	}
+	label:first-child{
+		margin-left: 0;
+	}
+
+	input{
+		position:absolute;
+		text-indent: -999999px;
+		display:none;
+	}
+	
+}
+.mapInfo{
+	@include cl( 4 );
+	height:400px;
+
+	input,label{
+		display:block;
+		width:100%;
+	}
+	input{
+		
+	}
+}
+.classique{
+margin-bottom: 1em;
+
+}
+
+/*END INDEX*/

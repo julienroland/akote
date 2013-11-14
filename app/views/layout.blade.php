@@ -12,6 +12,7 @@
 
 	<!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
       {{ HTML::style('/css/screen.css') }}
+      
       {{ HTML::script('js/vendor/modernizr-2.6.2.min.js') }}
       {{ HTML::script('js/jquery-ck.js') }}
 

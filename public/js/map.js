@@ -104,29 +104,30 @@
     {
       actionEcoleClick( nDistanceValueOk );
     }
-    actionChangeType ( sCityValue, nDistanceValueOk);
+    actionChangeType ();
 
    // ajaxAllKot();
  });
   }
   
-  var actionChangeType = function( sCityValue , nDistanceValueOk ){
+  var actionChangeType = function( ){
 
     if($('#rapide input:checked').val()==='ville'){
-
-      $('label.type').text('Indiquez l\'adresse');
-      $('input.type').attr('placeholder','Namur');
+      showGoogleMap();
+      $('label.map1').text('Indiquez l\'adresse');
+      $('input#map').attr('placeholder','Namur');
       sCachet = 'ville';
       
     }
     else if($('#rapide input:checked').val()==='ecole'){
-
-      $('label.type').text('Ecole ciblée');
-      $('input.type').attr('placeholder','Haute Ecole de La Province de Liège ou HEPL');
+      showGoogleMap();
+      $('label.map1').text('Ecole ciblée');
+      $('input#map').attr('placeholder','Haute Ecole de La Province de Liège ou HEPL');
       sCachet = 'ecole';
     } 
     else if($('#rapide input:checked').val()==='aucun'){
-      console.log('tout');
+      
+      hideGoogleMap();
     }
 
     autoriseFiltre( sCachet );
@@ -235,7 +236,7 @@ var drawMarkerEcole = function ( nLat , nLng, sAdresse , icon)
   {
       //afficher le nom dans l'input
 
-      $('.type').attr('value',oEcole[i].nom);
+      $('#map').attr('value',oEcole[i].nom);
 
       //enregistrer la valeur
 
@@ -288,6 +289,14 @@ var inRange = function ( oCenter, nDistance ) //obj Google / numeric
   }
 }
 $('#listKot').attr('value',JSON.stringify(aKots));
+}
+var hideGoogleMap = function(){
+  $('#gmap').css({display:"none"});
+  $('.mapInfo').css({height:"auto",marginLeft:0,float:"none"});
+}
+var showGoogleMap = function(){
+  $('#gmap').css({display:"block"});
+  $('.mapInfo').css({height:400,marginLeft:"2%",float:"left"});
 }
 var displayGoogleMap = function (){
 
