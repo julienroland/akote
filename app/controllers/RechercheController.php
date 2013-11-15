@@ -17,15 +17,15 @@ class RechercheController extends BaseController {
 
 		$formData = array(
 			'type' =>Input::get('type'),
-			// 'loyer_max' => Input::get('loyer_max'),
-			// 'loyer_min' => Input::get('loyer_min'),
-			// 'charges' => Input::get('charge')
+			 //'loyer_max' => Input::get('loyer_max'),
+			 //'loyer_min' => Input::get('loyer_min'),
+			 //'charges' => Input::get('charge')
 			);
 		$formRules = array(
 			'type' =>'required',
-			// 'loyer_max' => 'required',
-			// 'loyer_min' => 'required',
-			// 'charges' => 'required'
+			//'loyer_max' => '',
+			//'loyer_min' => '',
+			//'charges' => ''
 			);
 
 		$validator = Validator::make($formData, $formRules);
@@ -41,35 +41,26 @@ class RechercheController extends BaseController {
 		{
 			$aucun = true;
 			$ville = false;
-			$kot=false;
 			$ecole = false;
 		}
 		if($type === 'ville' )
 		{
 			$aucun = false;
 			$ville = true;
-			$kot=false;
 			$ecole = false;
 		}
 		else if($type === 'ecole' )
 		{
 			$aucun = false;
 			$ville = false;
-			$kot=false;
 			$ecole = true;
 		}
-		else if($type === 'kot' )
-		{
-			$aucun = false;
-			$ville = false;
-			$kot=true;
-			$ecole = false;
-		}
+
 		// $loyerMax=Input::get('loyer_max');
 		// $loyerMin=Input::get('loyer_min');
 		// $charges=Input::get('charge');
 		$zone=Input::get('zone');
-		$distance=Input::get('distances');
+		$distance=Input::get('distance');
 
 		$arrayRechercheRapide = array(
 			'ville'=>$ville,

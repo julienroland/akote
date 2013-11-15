@@ -21,11 +21,13 @@ class AjaxController extends BaseController
 		$lat= [];
 		$lng= [];
 		$adresse = [];
+		$excerpt = [];
+		$charges = [];
 		$oData = [];
 
 		foreach ($datas as $data)
 			{
-				$d = array('id'=>$data->id,'prix'=>$data->prix,'region'=>$data->region,'adresse'=>$data->adresse,'disponible'=>$data->disponible,'lat'=>$data->lat,'lng'=>$data->lng);
+				$d = array('id'=>$data->id,'prix'=>$data->prix,'region'=>$data->region,'adresse'=>$data->adresse,'disponible'=>$data->disponible,'lat'=>$data->lat,'lng'=>$data->lng,'excerpt'=>$data->excerpt,'charges'=>$data->charges);
 				array_push($oData, $d );
 			}
 		 

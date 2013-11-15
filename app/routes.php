@@ -349,7 +349,8 @@ Route::get('recherche/detaillee',array(
 *
 */
 /*voir annonce*/
-Route::get('annonce/id',array(
+Route::model('id','Annonce');
+Route::get('annonce/{id}',array(
 	'as'=>'showAnnonce',
 	'uses'=>'AnnonceController@show'
 	));

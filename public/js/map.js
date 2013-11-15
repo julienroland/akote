@@ -105,7 +105,6 @@
       actionEcoleClick( nDistanceValueOk );
     }
     actionChangeType ();
-
    // ajaxAllKot();
  });
   }
@@ -115,14 +114,14 @@
     if($('#rapide input:checked').val()==='ville'){
       showGoogleMap();
       $('label.map1').text('Indiquez l\'adresse');
-      $('input#map').attr('placeholder','Namur');
+      $('input#map').attr('placeholder','Ville');
       sCachet = 'ville';
       
     }
     else if($('#rapide input:checked').val()==='ecole'){
       showGoogleMap();
       $('label.map1').text('Ecole ciblée');
-      $('input#map').attr('placeholder','Haute Ecole de La Province de Liège ou HEPL');
+      $('input#map').attr('placeholder','Ecole');
       sCachet = 'ecole';
     } 
     else if($('#rapide input:checked').val()==='aucun'){
@@ -296,19 +295,20 @@ var hideGoogleMap = function(){
 }
 var showGoogleMap = function(){
   $('#gmap').css({display:"block"});
-  $('.mapInfo').css({height:400,marginLeft:"2%",float:"left"});
+  $('.mapInfo').css({height:"auto",marginLeft:0,float:"left"});
 }
 var displayGoogleMap = function (){
 
   var aMapOptions = {
     disableDefaultUI:true,
     scrollwheel:false,
-    zoom: 8,
+    zoom: 7,
     mapTypeId: google.maps.MapTypeId.ROADMAP,
-    center:new google.maps.LatLng(50.5,4)
+    center:new google.maps.LatLng(50.5,4.6)
   }
   gMap = new google.maps.Map(document.getElementById('gmap'),aMapOptions);
 
+  ajaxAllEcole();
 }
 var drawCircle = function(type , oCenter,sDistance){
   if( cityCircle )
@@ -357,9 +357,9 @@ var getCity = function(sPosition,sDistance){
     if(sStatus ===google.maps.GeocoderStatus.OK)
     {
       var center = aResults[0].geometry.location;
-      gMap.setZoom( 14 );
+      gMap.setZoom( 9 );
       gMap.panTo ( center );
-
+     
       $('#coords').attr('value',center);
 
       var oCircleRangeN = gSpherical.computeOffset(center, nDistance, 360);

@@ -11,7 +11,7 @@
 @if(Auth::check())
 Activité(s) - Dernière(s) visite(s) - dernier(s) message(s)
 @else
-<div class="wrapper">
+<div class="intro wrapper">
 	<div class="why">
 		<h3>{{('Pourquoi choisir Akote.be ?')}}</h3>
 
@@ -29,7 +29,7 @@ Activité(s) - Dernière(s) visite(s) - dernier(s) message(s)
 @endif
 
 <h3>{{('Rechercher un kot')}}</h3>
-<div class="wrapper icoRecherche">
+<div class="icoRecherche">
 	<ul>
 		<li><span class="link"><a href="#rapide"></a></span><span>Rapide</span></li>
 		<li><span class="link">{{link_to_route('showRapide','Détaillée')}}</span><span>Détaillée</span></li>
@@ -46,50 +46,21 @@ Activité(s) - Dernière(s) visite(s) - dernier(s) message(s)
 		<div class="content">
 			<span>{{('Rechercher par rapport à :')}}</span>
 			<div class="type">
-				{{Form::radio('type','aucun',Session::get('ancienneRechercheRapide[\'aucun\']',false),array('id'=>'aucun'))}}
+				{{Form::radio('type','aucun',Session::get('ancienneRechercheRapide')['aucun'],array('id'=>'aucun'))}}
 				{{Form::label('aucun','Aucun filtre')}}
 
-				{{Form::radio('type','ecole',Session::get('ancienneRechercheRapide[\'ecole\']',true),array('id'=>'ecole'))}}
+				{{Form::radio('type','ecole',Session::get('ancienneRechercheRapide')['ecole'],array('id'=>'ecole'))}}
 				{{Form::label('ecole','Une école')}}
 				
-				{{Form::radio('type','ville',Session::get('ancienneRechercheRapide[\'ville\']',false),array('id'=>'ville'))}}
+				{{Form::radio('type','ville',Session::get('ancienneRechercheRapide')['ville'],array('id'=>'ville'))}}
 				{{Form::label('ville','Une ville')}}
 				
 			</div>
 		</div>
-		<div class="classique">  
-			{{ Form::label('loyer_min','Loyer MIN') }}
-
-			{{ Form::select('loyer_min', array(
-				'100'=>'100',
-				'200'=>'200'
-				));
-
-			}}
-
-			{{ Form::label('loyer_max','Loyer MAX') }}
-			{{ Form::select('loyer_max',array(
-				'100'=>'100',
-				'200'=>'200'
-				));
-
-			}}
-
-
-
-			{{ Form::label('charge','Charges') }}
-
-			{{ Form::select('charge', array(
-				'Comprise',
-				'non-comprise'
-				));
-
-			}}
-		</div>
 		<div id="gmap"></div>
 		<div class="mapInfo">
 			{{Form::label('map','Indiquez l\'adresse',array('class'=>'map1'))}}
-			{{Form::text('zone',Session::get('ancienneRechercheRapide[\'zone\']',''),array('id'=>'map','placeholder'=>'Rue code postal,ville'))}}
+			{{Form::text('zone',Session::get('ancienneRechercheRapide')['zone'],array('id'=>'map','placeholder'=>'Rue code postal,ville'))}}
 
 			{{Form::label('distance','Indiquez le rayon du filtre (celui-ci est en mètre)')}}
 			{{Form::text('distance',Session::get('ancienneRechercheRapide')['distance'],array('id'=>'distance','placeholder'=>'ex : 1000 pour 1km'))}}
@@ -104,8 +75,40 @@ Activité(s) - Dernière(s) visite(s) - dernier(s) message(s)
 			{{Form::text('enregistrerNom','',array('placeholder'=>'ex: recherche kot liège'))}}
 			@endif
 
-			{{Form::hidden('listKot','',array('id'=>'listKot'))}}
+			{{Form::hidden('listKot',json_encode(Session::get('kotFromGoogle')),array('id'=>'listKot'))}}
 		</div>
+		<!-- <div class="classique">  
+			<fieldset>
+			<legend>Informations basique	</legend>
+				{{ Form::label('loyer_min','Loyer MIN') }}
+
+				{{ Form::select('loyer_min', array(
+					'100'=>'100',
+					'200'=>'200'
+					));
+
+				}}
+
+				{{ Form::label('loyer_max','Loyer MAX') }}
+				{{ Form::select('loyer_max',array(
+					'100'=>'100',
+					'200'=>'200'
+					));
+
+				}}
+
+
+
+				{{ Form::label('charge','Charges') }}
+
+				{{ Form::select('charge', array(
+					'Comprise',
+					'non-comprise'
+					));
+
+				}}
+			</fieldset>
+		</div> -->
 		{{Form::submit('envoye')}}
 		{{Form::close()}}
 		<!-- test si la session ancienne recherche existe -->

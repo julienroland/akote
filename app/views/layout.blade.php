@@ -33,54 +33,56 @@
                   <section role="banner" class="banner">
 
 
-                    <h1 class="logo">{{link_to_route('showIndex','logo')}}</h1>
+                      <h1 class="logo">{{link_to_route('showIndex','logo')}}</h1>
 
 
-                    <nav role="navigation" class="mainNav">
-                       <ul>
-                            @if (Auth::check())
-                            <li>{{link_to_route('deconnecterUser','Se déconnecter')}}</li>
-                            <li>{{link_to_route('profilUser','Profil')}}</li>
-                            @else
-                            <li>{{link_to_route('identifierUser','S\'indentifier')}}</li>
+                      <nav role="navigation" class="mainNav">
+                         <ul>
+                          @if (Auth::check())
+                          <li>{{link_to_route('deconnecterUser','Se déconnecter')}}</li>
+                          <li>{{link_to_route('profilUser','Profil')}}</li>
+                          @else
+                          <li>{{link_to_route('identifierUser','S\'indentifier')}}</li>
 
-                            <li>  {{link_to_route('showInscription','S\'inscrire')}}</li>
+                          <li>  {{link_to_route('showInscription','S\'inscrire')}}</li>
 
-                            @endif
+                          @endif
 
-                      </ul>
-                </nav>
-          </section>
-          <section class="main" role="main">
-               <nav>
+                    </ul>
+              </nav>
+        </section>
+        <section class="main" role="main">
+         <nav>
 
-                 {{link_to_route('showIndex','Accueil') }}
+             {{link_to_route('showIndex','Accueil') }}
 
-           </nav>
-           <?php var_dump(Session::get('user')); ?>
+       </nav>
+       <?php var_dump(Session::get('user')); ?>
 
 
-           @yield('container')
+       @yield('container')
 
-     </section>
+ </section>
 </section>
 <footer role="contentinfo">
-      <ul>
-       <li>Qui sommes-nous?</li>
-       <li>Mentions légales</li>
-       <li>Contactez-nous</li>
-       </ul>
+<div class="wrapper foot">
+            <ul>
+                 <li>Qui sommes-nous?</li>
+                 <li>Mentions légales</li>
+                 <li>Contactez-nous</li>
+           </ul>
+     </div>
 </footer>
 
 
 <!-- Google Analytics: change UA-XXXXX-X to be your site's ID. -->
 <script>
- (function(b,o,i,l,e,r){b.GoogleAnalyticsObject=l;b[l]||(b[l]=
-  function(){(b[l].q=b[l].q||[]).push(arguments)});b[l].l=+new Date;
- e=o.createElement(i);r=o.getElementsByTagName(i)[0];
- e.src='//www.google-analytics.com/analytics.js';
- r.parentNode.insertBefore(e,r)}(window,document,'script','ga'));
- ga('create','UA-XXXXX-X');ga('send','pageview');
+     (function(b,o,i,l,e,r){b.GoogleAnalyticsObject=l;b[l]||(b[l]=
+          function(){(b[l].q=b[l].q||[]).push(arguments)});b[l].l=+new Date;
+     e=o.createElement(i);r=o.getElementsByTagName(i)[0];
+     e.src='//www.google-analytics.com/analytics.js';
+     r.parentNode.insertBefore(e,r)}(window,document,'script','ga'));
+     ga('create','UA-XXXXX-X');ga('send','pageview');
 </script>
 </body>
 </html>

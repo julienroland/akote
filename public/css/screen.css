@@ -56,6 +56,7 @@ article, aside, details, figcaption, figure, footer, header, hgroup, menu, nav, 
 
 /*l * 100 / 1024*/
 /*l * 100 / 1024*/
+/* GENERAL STYLE */
 body {
   background-color: #bfbfbf;
   color: #7c7c7c;
@@ -66,21 +67,69 @@ body {
   overflow-y: hidden;
 }
 
+.wrapper {
+  width: 100%;
+  overflow: hidden;
+  margin: auto;
+  margin-bottom: 1em;
+  box-sizing: border-box;
+}
+.wrapper:after {
+  content: "";
+  display: block;
+  height: 0;
+  clear: both;
+  visibility: hidden;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-weight: 700;
+  color: #5382d9;
+  margin: 0 0 0.5em 0;
+  line-height: 1.1em;
+  text-align: center;
+}
+
+h1 {
+  font-size: 3em;
+}
+
+h2 {
+  font-size: 2.5em;
+}
+
+h3 {
+  font-size: 2em;
+}
+
+h4 {
+  font-size: 1.8em;
+}
+
+h5 {
+  font-size: 1.5em;
+}
+
+h6 {
+  font-size: 1.2em;
+}
+
 a {
   text-decoration: none;
   font-weight: 500;
-  color: #626262;
+  color: #5382d9;
   -webkit-transition: all 0.5s ease;
   -moz-transition: all 0.5s ease;
   -o-transition: all 0.5s ease;
   transition: all 0.5s ease;
 }
 a:hover, a:focus {
-  color: #2f2f2f;
+  color: #2d65cc;
 }
 
 p {
   text-align: justify;
+  margin-bottom: 1em;
 }
 
 ul {
@@ -120,6 +169,17 @@ ul {
   display: inline-block;
 }
 
+input, textarea, textarea, select, label {
+  width: 100%;
+  display: inline-block;
+}
+
+input, textarea, textarea, select {
+  width: 100%;
+  display: inline-block;
+  margin-bottom: 1em;
+}
+
 input, textarea {
   background-color: #FFF;
   border: 2px solid #bfbfbf;
@@ -131,7 +191,7 @@ input, textarea {
   color: black;
   font-size: 15px;
   text-align: left;
-  height: 30px;
+  min-height: 30px;
   margin: 0.2em 0 1em 0;
   outline: none;
   padding: 0.5em;
@@ -159,7 +219,7 @@ input[type="submit"], button, textarea[type="submit"] {
   -o-transition: all 0.5s ease;
   transition: all 0.5s ease;
   outline: none;
-  padding: 0;
+  padding: 0.5em 0;
 }
 input[type="submit"]:hover, button:hover, textarea[type="submit"]:hover, input[type="submit"]:focus, button:focus, textarea[type="submit"]:focus {
   background-color: #2d65cc;
@@ -175,7 +235,7 @@ button {
   -ms-border-radius: 0.5em;
   -o-border-radius: 0.5em;
   border-radius: 0.5em;
-  margin: 1em 0;
+  margin: 0em 0 1em 0;
   background-color: #bfbfbf;
 }
 button:hover, button:focus {
@@ -188,14 +248,8 @@ textarea {
 }
 
 select {
-  margin-right: 1em;
-  width: 100px;
   color: #7c7c7c;
-}
-
-select {
   background: transparent;
-  width: 268px;
   padding: 5px;
   font-size: 16px;
   line-height: 1;
@@ -245,6 +299,12 @@ select:focus {
   color: #7c7c7c;
 }
 
+fieldset {
+  padding: 1em 0.5em;
+  border: 1px solid #bfbfbf;
+}
+
+/*END GENERAL STYLE*/
 .container {
   background-color: #FFF;
   max-width: 1200px;
@@ -252,12 +312,16 @@ select:focus {
   margin-left: 0;
   display: block;
   float: none;
+  margin: auto;
   box-sizing: border-box;
   margin: auto;
+  -webkit-box-shadow: 0 0 2em 2px rgba(0, 0, 0, 0.2);
+  -moz-box-shadow: 0 0 2em 2px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 0 2em 2px rgba(0, 0, 0, 0.2);
   padding-bottom: 5em;
 }
 .container:after {
-  content: ".";
+  content: "";
   display: block;
   height: 0;
   clear: both;
@@ -328,7 +392,6 @@ select:focus {
 .mainNav ul li {
   background-color: #737373;
   margin-right: 1em;
-  min-width: 150px;
   float: right;
   -webkit-transition: all 0.5s ease;
   -moz-transition: all 0.5s ease;
@@ -355,70 +418,32 @@ select:focus {
   margin-left: 0;
   display: block;
   float: none;
+  margin: auto;
   box-sizing: border-box;
   margin: auto;
   padding: 0 1em;
 }
 
-.wrapper {
-  width: 100%;
-  overflow: hidden;
-  margin: auto;
-  margin-bottom: 3em;
-  box-sizing: border-box;
-}
-.wrapper:after {
-  content: ".";
-  display: block;
-  height: 0;
-  clear: both;
-  visibility: hidden;
-}
-
-h1, h2, h3, h4, h5, h6 {
-  font-weight: 700;
-  color: #5382d9;
-  margin: 0 0 1em 0;
-}
-
-h1 {
-  font-size: 3em;
-}
-
-h2 {
-  font-size: 2.5em;
-}
-
-h3 {
-  font-size: 2em;
-}
-
-h4 {
-  font-size: 1.8em;
-}
-
-h5 {
-  font-size: 1.5em;
-}
-
-h6 {
-  font-size: 1.2em;
-}
-
 /* INDEX */
 .why {
-  width: 49%;
+  width: 99%;
   float: left;
   display: block;
   box-sizing: border-box;
+  margin-bottom: 1em;
 }
 
 .help {
-  width: 49%;
+  width: 99%;
   margin-left: 2%;
   float: left;
   display: block;
   box-sizing: border-box;
+  margin-bottom: 1em;
+}
+
+.intro {
+  border-bottom: 1px solid #bfbfbf;
 }
 
 .icoRecherche {
@@ -436,7 +461,7 @@ h6 {
   position: relative;
 }
 .icoRecherche ul li:after {
-  content: ".";
+  content: "";
   display: block;
   height: 0;
   clear: both;
@@ -494,9 +519,8 @@ h6 {
 }
 
 #gmap {
-  height: 400px;
-  width: 80%;
-  width: 65.66667%;
+  height: 300px;
+  width: 99%;
   float: left;
   display: block;
   box-sizing: border-box;
@@ -511,23 +535,29 @@ h6 {
 }
 
 .content {
-  width: 80%;
+  width: 99%;
+  margin-left: 0;
+  display: block;
+  float: none;
+  margin: auto;
+  box-sizing: border-box;
   text-align: center;
-}
-.content span {
-  display: inline-block;
-  height: 50px;
-  float: left;
 }
 
 .type {
-  display: inline-block;
+  display: block;
   text-align: center;
-  height: 50px;
+  width: 99%;
+  margin-left: 0;
+  display: block;
+  float: none;
+  margin: auto;
+  box-sizing: border-box;
+  position: relative;
   margin-bottom: 1em;
 }
 .type:after {
-  content: ".";
+  content: "";
   display: block;
   height: 0;
   clear: both;
@@ -538,16 +568,16 @@ h6 {
 }
 .type label {
   box-sizing: border-box;
-  display: block;
-  width: 200px;
+  display: inline-block;
+  width: 100%;
   height: 50px;
   color: #FFF;
   background-color: #737373;
-  padding: 1em;
+  padding: 0.5em 0;
   text-align: center;
+  vertical-align: center;
   font-weight: bold;
-  float: left;
-  margin-left: 1em;
+  margin: auto;
   cursor: pointer;
   -webkit-transition: all 0.5s ease;
   -moz-transition: all 0.5s ease;
@@ -567,16 +597,12 @@ h6 {
 }
 
 .mapInfo {
-  width: 32.33333%;
-  margin-left: 2%;
-  float: left;
+  width: 99%;
+  margin-left: 0;
   display: block;
+  float: none;
+  margin: auto;
   box-sizing: border-box;
-  height: 400px;
-}
-.mapInfo input, .mapInfo textarea, .mapInfo label {
-  display: block;
-  width: 100%;
 }
 
 .classique {
@@ -584,3 +610,18 @@ h6 {
 }
 
 /*END INDEX*/
+/* FOOTER */
+footer {
+  background-color: #7c7c7c;
+  color: white;
+  max-width: 1200px;
+  width: 99%;
+  margin-left: 0;
+  display: block;
+  float: none;
+  margin: auto;
+  box-sizing: border-box;
+  margin: auto;
+}
+
+/* END FOOTER */
