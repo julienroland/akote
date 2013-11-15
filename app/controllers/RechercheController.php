@@ -13,6 +13,11 @@ class RechercheController extends BaseController {
 
 		return View::make('recherche.rapide');
 	}
+	public function trier($tri){
+
+		$kots = Kot::orderBy($tri,'ASC')->get();
+		return View::make('recherche.type.ville')->with('listeKot',$kots);
+	}
 	public function rechercheRapide($type = NULL){
 
 		$formData = array(

@@ -32,7 +32,7 @@ Activité(s) - Dernière(s) visite(s) - dernier(s) message(s)
 <div class="icoRecherche">
 	<ul>
 		<li><span class="link"><a href="#rapide"></a></span><span>Rapide</span></li>
-		<li><span class="link">{{link_to_route('showRapide','Détaillée')}}</span><span>Détaillée</span></li>
+		<li><span class="link"><span>Détaillée</span></li>
 	</li>
 </ul>
 </div>

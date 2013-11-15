@@ -7,8 +7,13 @@ class AjaxController extends BaseController
 	
 	public function listKot()
 	{
-		$datas = DB::table('kot')->get();
+		$datas = DB::table('kot')
 
+			->leftJoin('disponible','kot.disponible_id','=','disponible.id')
+			->leftJoin('charges','kot.charge_id','=','charges.id')
+			
+			->get();
+			
 		if(!$datas)
 		{	
 			
@@ -17,21 +22,21 @@ class AjaxController extends BaseController
 		$id = [];
 		$prix = [];
 		$region = [];
-		$disponibilite = []; 
+		//$disponibilite = []; 
 		$lat= [];
 		$lng= [];
 		$adresse = [];
 		$excerpt = [];
-		$charges = [];
+		//$charges = [];
 		$oData = [];
 
 		foreach ($datas as $data)
 			{
-				$d = array('id'=>$data->id,'prix'=>$data->prix,'region'=>$data->region,'adresse'=>$data->adresse,'disponible'=>$data->disponible,'lat'=>$data->lat,'lng'=>$data->lng,'excerpt'=>$data->excerpt,'charges'=>$data->charges);
+				$d = array('id'=>$data->id,'prix'=>$data->prix,'region'=>$data->region,'adresse'=>$data->adresse,'lat'=>$data->lat,'lng'=>$data->lng,'excerpt'=>$data->excerpt);
 				array_push($oData, $d );
 			}
 		 
-		return(json_encode(array('data'=>$oData)));
+			return(json_encode(array('data'=>$oData)));
 	}
 	public function listEcole()
 	{

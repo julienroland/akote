@@ -317,15 +317,19 @@ Route::get('recherche',array(
 
 /*rapide*/
 
-Route::get('recherche/rapide',array(
+/*Route::get('recherche/rapide',array(
 
 	'as'=>'showRapide',
 	'uses'=>'RechercheController@rapide'
 
-	));
-Route::any('recherche/rapide/{type?}',array(
+	));	*/
+Route::any('recherche/rapide',array(
 	'as'=>'showRapideEcole',
 	'uses'=>'RechercheController@rechercheRapide'
+	));
+Route::any('recherche/rapide/{tri}',array(
+	'as'=>'triRapide',
+	'uses'=>'RechercheController@trier'
 	));
 
 /*END rapide*/
@@ -336,7 +340,6 @@ Route::get('recherche/detaillee',array(
 
 	'as'=>'showDetaillee',
 	'uses'=>'RechercheController@detaillee'
-
 	));
 
 /*END detaillee*/
@@ -349,8 +352,7 @@ Route::get('recherche/detaillee',array(
 *
 */
 /*voir annonce*/
-Route::model('id','Annonce');
-Route::get('annonce/{id}',array(
+Route::get('annonce/{id?}',array(
 	'as'=>'showAnnonce',
 	'uses'=>'AnnonceController@show'
 	));
