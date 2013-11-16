@@ -11,6 +11,35 @@
 |
 */
 
+/* TEST */
+Route::get('testModelAnnonce',function(){
+	$annonce= Annonce::with('annonce')
+		->join('users','annonces.user_id','=','users.id')
+		->get();
+	return $annonce;
+});
+Route::get('testModelUserKot',function(){
+	$kots= Kot::with('user')
+		->join('userHasKots','kot.id','=','userHasKots.kot_id')
+		->join('users','userHasKots.user_id','=','users.id')
+		->where('users.id','=','39')
+		->get();
+
+		return $kots;
+	
+});
+Route::get('testModelKot',function(){
+	$kots= User::with('kot')
+		->join('userHasKots','users.id','=','userHasKots.user_id')
+		->join('kot','userHasKots.kot_id','=','kot.id')
+		->where('users.id','=','39')
+		->get();
+
+		return $kots;
+	
+});
+/* END TEST*/
+
 /*
 *
 *	Français
@@ -352,14 +381,14 @@ Route::get('recherche/detaillee',array(
 *
 */
 /*voir annonce*/
-Route::get('annonce/{id?}',array(
+Route::get('annonce/{id}',array(
 	'as'=>'showAnnonce',
 	'uses'=>'AnnonceController@show'
 	));
 /*END voir annonce*/
 
 /*valider annonce*/
-Route::any('annonce/id/valider',array('before'=>'auth',
+Route::any('annonce/{id}/valider',array('before'=>'auth',
 	'as'=>'validateAnnonce',
 	'uses'=>'AnnonceController@validate'
 	));

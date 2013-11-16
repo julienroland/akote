@@ -31,25 +31,32 @@ class IdentifierController extends BaseController
 		
 		if ($validator->passes()) {
 
+			
 			if (Auth::attempt($userdata)) {
 				
 				$user = User::where('email',$email)->first();
 				
 
 				Session::put('user',$user);
-			
+
 
 				$prenomNom = $user->prenom.' '.$user->nom;
 
 
 				return Redirect::intended('/')
-					->with('message','Vous êtes maintenant connecté en tant que '.$prenomNom);
+				->with('message','Vous êtes maintenant connecté en tant que '.$prenomNom);
 			} else {
 
 				return Redirect::to('identifier')
-					->with('message','Erreur');
+				->with('message','Erreur');
 
 			}
+		}
+		else
+		{
+			$messages = $validator->messages();
+			return Redirect::to('identifier')
+				->with('message',$messages);
 		}
 
 	}

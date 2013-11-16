@@ -9,8 +9,8 @@ class AjaxController extends BaseController
 	{
 		$datas = DB::table('kot')
 
-			->leftJoin('disponible','kot.disponible_id','=','disponible.id')
-			->leftJoin('charges','kot.charge_id','=','charges.id')
+			//->leftJoin('disponible','kot.disponible_id','=','disponible.id')
+			//->join('charges','kot.charge_id','=','charges.id')
 			
 			->get();
 			

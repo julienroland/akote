@@ -14,20 +14,46 @@ class AnnonceController extends BaseController {
 		return View::make('inscription.locataire.etape1');
 	}
 
-	public function show()
+	public function show($id)
 	{
-		
-		Return View::make('annonces.annonce');
+		$annonce = Annonce::find($id);
+		return View::make('annonces.annonce')->with('annonce',$annonce);
 
 	}
 	public function validate()
 	{
 		$chambre = Input::get('chambre');
-	
-		Return View::make('annonces.validate')->with('chambre',$chambre);
+		$id = Input::get('id');
+		$user_id = Session::get('user')['id'];
+
+		$userdata = array(
+			'chambre'=> $chambre,
+			);
+
+		$rules = array(
+			'chambre' => 'required|numeric'
+			);
+		
+		$validator = Validator::make($userdata, $rules);
+		
+		if ($validator->passes()) {
+
+			$chambre_add = Chambre::where('kot_id','=',$id)->where('numero','=',$chambre)->first();
+			$chambre_add->locataire_id = $user_id;
+			
+			$chambre_add->save();
+			
+			return View::make('annonces.validate')->with('chambre',$chambre);
+
+			}
+			else
+			{
+				$messages = $validator->messages();
+				return Redirect::to('annonce/'.$id)
+				->with('message',$messages);
+			}
+		}
+
+
 
 	}
-
-	
-
-}

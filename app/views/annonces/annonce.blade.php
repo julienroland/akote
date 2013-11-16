@@ -1,20 +1,23 @@
 @extends('layout')
 
 @section('container')
-ici serra présenté l'annonce
 
+<?php var_dump($annonce); ?>
+<p>{{$annonce->titre}}</p>
+<p>{{$annonce->description}}</p>	
 {{('Ajouter aux favoris')}}
 {{('Contacter')}}
-{{Form::open(array('url'=>'annonce/id/valider'))}}
-	{{Form::label('chambre','Se porte candidat pour la chambre')}}
+{{Form::open(array('url'=>'annonce/'.$annonce->id.'/valider'))}}
+{{Form::label('chambre','Se porte candidat pour la chambre')}}
+@for($i=1;$i<=$annonce->nb_chambre;$i++)
 
-	{{Form::label('chambre1','n°:1')}}
-	{{Form::radio('chambre','1',array('id'=>'chambre1'))}}
+{{Form::label('chambre'.$i.'','n°:'.$i.'')}}
+{{Form::radio('chambre',$i,false,array('id'=>'chambre'.$i))}}
 
-	{{Form::label('chambre2','n°:2')}}
-	{{Form::radio('chambre','2',array('id'=>'chambre2'))}}
+@endfor
+{{Form::hidden('id',$annonce->id)}}
+{{Form::submit('Valider')}}
 
-	{{Form::submit('Valider')}}
 
 {{Form::close()}}
 

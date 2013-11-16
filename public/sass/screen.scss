@@ -94,16 +94,16 @@ input{
 	padding:0.5em;
 	-webkit-appearance: none;
 	box-sizing:border-box;
-	min-width: 100px;
+//	min-width: 100px;
 
-	&:hover{
-		border:2px solid $greyL2H;
+&:hover{
+	border:2px solid $greyL2H;
 
-	}
-	&:focus{
-		border:2px solid $blue;
-		-webkit-appearance: none;
-	}
+}
+&:focus{
+	border:2px solid $blue;
+	-webkit-appearance: none;
+}
 
 }
 input[type="submit"]{
@@ -118,6 +118,18 @@ input[type="submit"]{
 	padding:0.5em 0;
 	&:hover,&:focus{
 		background-color: $blueH;
+	}
+}
+input[type=radio]{
+	width:30px;
+	&:checked{
+		background-image: image-url('true.png');
+		background-size: contain;
+		background-repeat: no-repeat;	
+		border:1px dotted green;
+		&:hover,&:focus{
+			border:1px solid green;
+		}
 	}
 }
 button{

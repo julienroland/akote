@@ -197,7 +197,6 @@ input, textarea {
   padding: 0.5em;
   -webkit-appearance: none;
   box-sizing: border-box;
-  min-width: 100px;
 }
 input:hover, textarea:hover {
   border: 2px solid #a5a5a5;
@@ -223,6 +222,19 @@ input[type="submit"], button, textarea[type="submit"] {
 }
 input[type="submit"]:hover, button:hover, textarea[type="submit"]:hover, input[type="submit"]:focus, button:focus, textarea[type="submit"]:focus {
   background-color: #2d65cc;
+}
+
+input[type=radio], textarea[type=radio] {
+  width: 30px;
+}
+input[type=radio]:checked, textarea[type=radio]:checked {
+  background-image: url('/img/true.png?1384616131');
+  background-size: contain;
+  background-repeat: no-repeat;
+  border: 1px dotted green;
+}
+input[type=radio]:checked:hover, textarea[type=radio]:checked:hover, input[type=radio]:checked:focus, textarea[type=radio]:checked:focus {
+  border: 1px solid green;
 }
 
 button {

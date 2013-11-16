@@ -18,6 +18,7 @@ class ProfilController extends BaseController
 	}
 
 	public function monKot(){
+		//$chambre = Chambre::where('locataire_id','=',Session::get('user')['id'])->first(); //faire la relative entre la chambre qui est à mon user et au kot en question.
 		Return View::make('profil.locataire.monKot');
 	}
 
