@@ -10,6 +10,7 @@
   oKots,
   nDistanceValueOk,
   oEcoles,
+  bEcoleClick =false,
   aKots = [],
   oEcole = [],
   gEcole = new google.maps.LatLng(),
@@ -29,32 +30,20 @@
   gPlaceAutoComplete;
   
   $(function(){
-   /* $(window).load(function(){
-      if($('#rapide input:checked').val()==='ville'){
+    ajaxAllEcole();
+    ajaxAllKot();
 
-      }
-      else if($('#rapide input:checked').val()==='ecole'){
+    actionChangeType();
+    $('#rapide input').on("click", actionChangeType);
+    var options = {
+      types: ['(cities)'],
+      componentRestrictions: {country:"be"}
+    };
+    gPlaceAutoComplete = new google.maps.places.Autocomplete(input,options);
 
-      } 
-      else if($('#rapide input:checked').val()==='aucun'){
-
-      }
-    });*/
-
-  ajaxAllEcole();
-  ajaxAllKot();
-
-  actionChangeType();
-  $('#rapide input').on("click", actionChangeType);
-  var options = {
-    types: ['(cities)'],
-    componentRestrictions: {country:"be"}
-  };
-  gPlaceAutoComplete = new google.maps.places.Autocomplete(input,options);
-
-  displayGoogleMap();
-});
-  var autoriseFiltre = function( sCachet )
+    displayGoogleMap();
+  });
+  var eventInput = function()
   {
 
     $('#filtrer').click(function(){
@@ -69,15 +58,17 @@
        nDistanceValueOk = 0;
      }
      var sCityValue = document.getElementById('map').value;
-
-     if( sCachet === 'ville')
+     if(bEcoleClick)
      {
-      getCity( sCityValue , nDistanceValueOk );
-    }
-    else if( sCachet === 'ecole')
-    {
       actionEcoleClick( nDistanceValueOk );
     }
+    else
+    {
+      getCity( sCityValue , nDistanceValueOk );
+    }
+    
+
+    
 
 
   }); 
@@ -96,40 +87,39 @@
      }
      var sCityValue = document.getElementById('map').value;
 
-     if( sCachet === 'ville')
+     bEcoleClick = false;
+     if(bEcoleClick)
      {
-      getCity( sCityValue , nDistanceValueOk );
-    }
-    else if( sCachet === 'ecole')
-    {
       actionEcoleClick( nDistanceValueOk );
     }
-    actionChangeType ();
+     else
+    {
+      getCity( sCityValue , nDistanceValueOk );
+    }
+    
+    //actionChangeType ();
    // ajaxAllKot();
  });
   }
   
-  var actionChangeType = function( ){
+  var actionChangeType = function(){
 
-    if($('#rapide input:checked').val()==='ville'){
-      showGoogleMap();
-      $('label.map1').text('Indiquez l\'adresse');
-      $('input#map').attr('placeholder','Ville');
-      sCachet = 'ville';
-      
-    }
-    else if($('#rapide input:checked').val()==='ecole'){
-      showGoogleMap();
-      $('label.map1').text('Ecole ciblée');
-      $('input#map').attr('placeholder','Ecole');
-      sCachet = 'ecole';
-    } 
-    else if($('#rapide input:checked').val()==='aucun'){
-      
+    $('label.map1').text('Ecole ciblée');
+    $('input#map').attr('placeholder','Ecole');
+    
+    
+    if($('#rapide input:checked').val()==='aucun'){
+
       hideGoogleMap();
     }
+    else
+    {
+      showGoogleMap();
+      $('label.map1').text('Indiquez l\'adresse ou clickez sur une école');
+      $('input#map').attr('placeholder','Ville, école');
+    }
 
-    autoriseFiltre( sCachet );
+    eventInput();
   }
 
   var ajaxAllKot = function(){
@@ -215,7 +205,9 @@ var drawMarkerEcole = function ( nLat , nLng, sAdresse , icon)
  // actionEcoleClick();
  google.maps.event.addListener(gMarkerEcole,'click',function( e ){
 
-   sNom = [];
+  bEcoleClick = true;
+  console.log(bEcoleClick);
+  sNom = [];
     //centrer sur l'école
     gMap.setZoom(12);
     gMap.panTo(gMarkerEcole.getPosition());
@@ -285,9 +277,10 @@ var inRange = function ( oCenter, nDistance ) //obj Google / numeric
     aKots.push(oKots[i]);
     gMarkerArrayKot[i].setMap( gMap );
     gMap.fitBounds (boundd);
+    $('#listKot').attr('value',JSON.stringify(aKots));
   }
 }
-$('#listKot').attr('value',JSON.stringify(aKots));
+
 }
 var hideGoogleMap = function(){
   $('#gmap').css({display:"none"});
@@ -359,7 +352,7 @@ var getCity = function(sPosition,sDistance){
       var center = aResults[0].geometry.location;
       gMap.setZoom( 9 );
       gMap.panTo ( center );
-     
+
       $('#coords').attr('value',center);
 
       var oCircleRangeN = gSpherical.computeOffset(center, nDistance, 360);

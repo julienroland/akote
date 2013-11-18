@@ -41,19 +41,15 @@ Activité(s) - Dernière(s) visite(s) - dernier(s) message(s)
 		
 
 		<?php  var_dump(Session::get('ancienneRechercheRapide'));?>
-
+		@if(isset($errorMessage)){{$errorMessage}}@endif
 		{{ Form::open(array('url' => 'recherche/rapide/' )) }}
 		<div class="content">
 			<span>{{('Rechercher par rapport à :')}}</span>
 			<div class="type">
-				{{Form::radio('type','aucun',Session::get('ancienneRechercheRapide')['aucun'],array('id'=>'aucun'))}}
+				{{Form::radio('type','aucun',false,array('id'=>'aucun'))}}
 				{{Form::label('aucun','Aucun filtre')}}
 
-				{{Form::radio('type','ecole',Session::get('ancienneRechercheRapide')['ecole'],array('id'=>'ecole'))}}
-				{{Form::label('ecole','Une école')}}
 				
-				{{Form::radio('type','ville',Session::get('ancienneRechercheRapide')['ville'],array('id'=>'ville'))}}
-				{{Form::label('ville','Une ville')}}
 				
 			</div>
 		</div>

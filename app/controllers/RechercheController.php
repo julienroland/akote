@@ -20,8 +20,8 @@ class RechercheController extends BaseController {
 	}
 	public function rechercheRapide($type = NULL){
 
-		$formData = array(
-			'type' =>Input::get('type'),
+		/*$formData = array(
+			//'type' =>Input::get('type'),
 			 //'loyer_max' => Input::get('loyer_max'),
 			 //'loyer_min' => Input::get('loyer_min'),
 			 //'charges' => Input::get('charge')
@@ -39,10 +39,10 @@ class RechercheController extends BaseController {
 		{
 			$messages = $validator->messages();
 			return Redirect::to('/')->with('validatorMessage',$messages);
-		}
+		}*/
 		$type=Input::get('type');
 
-		if($type === 'aucun' )
+		/*if($type === 'aucun' )
 		{
 			$aucun = true;
 			$ville = false;
@@ -59,7 +59,7 @@ class RechercheController extends BaseController {
 			$aucun = false;
 			$ville = false;
 			$ecole = true;
-		}
+		}*/
 
 		// $loyerMax=Input::get('loyer_max');
 		// $loyerMin=Input::get('loyer_min');
@@ -68,9 +68,9 @@ class RechercheController extends BaseController {
 		$distance=Input::get('distance');
 
 		$arrayRechercheRapide = array(
-			'ville'=>$ville,
-			'aucun'=>$aucun,
-			'ecole'=>$ecole,
+			//'ville'=>$ville,
+			//'aucun'=>$aucun,
+			//'ecole'=>$ecole,
 			// 'loyer_max'=>$loyerMax,
 			// 'loyer_min'=>$loyerMin,
 			// 'charges'=>$charges,
@@ -109,7 +109,7 @@ class RechercheController extends BaseController {
 						)
 					);
 					if(!$rechercheRapide){
-						return Redirect::to('/')->with('bddMessage','Erreur lors de l\'ajout à la base de donnée');
+						return Redirect::to('/')->with('errorMessage','Erreur lors de l\'ajout à la base de donnée');
 					}
 
 				}
@@ -117,7 +117,46 @@ class RechercheController extends BaseController {
 			}//end enregistrement recherche
 		}
 		
-		if(Input::get('type')==='aucun')
+		if($type ==='aucun'){
+			if(!empty($zone)){
+
+				$kot = Kot::where('region',strtolower($zone))->get();
+
+				return View::make('recherche.type.ville')->with('listeKot',$kot);
+			}
+			else
+			{
+				$kot = Kot::all();
+				return View::make('recherche.type.ville')->with(array('listeKot'=>$kot,'message'=>'Vous n\'avez ciblé aucune école précédemment, vous pouvez le faire maintenant'));		
+			}
+		}
+		else if(Input::get('listKot')!=="null" || empty(Input::get('listKot')))
+		{
+			var_dump('test1');
+			var_dump(json_encode(Input::get('listKot')));
+			$kot = json_decode(Input::get('listKot')); //liste des kots
+			
+			Session::put('kotFromGoogle',$kot);
+
+			return View::make('recherche.type.ville')->with('listeKot',Session::get('kotFromGoogle'));		
+		}
+		else if(empty($type))
+		{
+			var_dump('test');
+			if(!empty($zone)){
+
+				$kot = Kot::where('region',strtolower($zone))->get();
+
+				return View::make('recherche.type.ville')->with('listeKot',$kot);
+			}
+			else
+			{
+				$kot = Kot::all();
+				return View::make('recherche.type.ville')->with(array('listeKot'=>$kot,'message'=>'Vous n\'avez ciblé aucune école précédemment, vous pouvez le faire maintenant'));		
+			}
+					
+		}
+		/*if(Input::get('type')==='aucun')
 		{
 
 			$kot = DB::table('kot')->get();
@@ -187,7 +226,7 @@ class RechercheController extends BaseController {
 				}
 			}
 
-		}
+		}*/
 
 		
 	}
