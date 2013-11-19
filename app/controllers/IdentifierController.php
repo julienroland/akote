@@ -29,34 +29,29 @@ class IdentifierController extends BaseController
 		
 		$validator = Validator::make($userdata, $rules);
 		
-		if ($validator->passes()) {
-
+		if ($validator->fails()) {
+			$messages = $validator->messages();
+			return View::make('profil.identifier')
+			->with('errorMessages',$messages);
 			
-			if (Auth::attempt($userdata)) {
-				
-				$user = User::where('email',$email)->first();
-				
-
-				Session::put('user',$user);
-
-
-				$prenomNom = $user->prenom.' '.$user->nom;
-
-
-				return Redirect::intended('/')
-				->with('message','Vous êtes maintenant connecté en tant que '.$prenomNom);
-			} else {
-
-				return Redirect::to('identifier')
-				->with('message','Erreur');
-
-			}
 		}
 		else
 		{
-			$messages = $validator->messages();
-			return Redirect::to('identifier')
-				->with('message',$messages);
+			if (Auth::attempt($userdata)) {
+				
+				$user = User::where('email',$email)->first();				
+
+				Session::put('user',$user);
+
+				$prenomNom = $user->prenom.' '.$user->nom;
+
+				return Redirect::intended('profil')
+					->with('message','Vous êtes maintenant connecté en tant que '.$prenomNom);
+			} else {
+				return Redirect::to('identifier')
+					->with('errorMessages','erreur');
+
+			}
 		}
 
 	}

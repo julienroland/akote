@@ -2,11 +2,15 @@
 
 @section('container')
 
-<ul>
-	<li>{{('Votre nom: ')}}{{Session::get('user')['nom']}}</li>
-	<li>{{('Votre prénom: ')}}{{Session::get('user')['prenom']}}</li>
-	<li>{{('Type de compte: ')}}{{Session::get('user')['accountType']}}</li>
-	<li>{{('Votre email: ')}}{{Session::get('user')['email']}}</li>
-</ul>
+@if(isset($userData))
+	@foreach($userData as $user)
+		<ul>
+	<li>{{('Votre nom: ')}}{{$user->nom}}</li>
+	<li>{{('Votre prénom: ')}}{{$user->prenom}}</li>
+	<li>{{('Type de compte: ')}}{{$user->accountType}}</li>
+	<li>{{('Votre email: ')}}{{$user->email}}</li>
+</ul> 
+	@endforeach
+@endif
 
 @stop

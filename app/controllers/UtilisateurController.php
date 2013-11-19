@@ -7,9 +7,17 @@ class UtilisateurController extends \BaseController {
 	 *
 	 * @return Response
 	 */
-	public function index()
+	protected $tweet;
+
+	public function __construct(User $user)
 	{
-		//
+		$this->user = $user;
+	}
+
+	public function index($user_id)
+	{
+		$userData = $this->user->where('users.id','=',$user_id)->get();
+		return View::make('profil.informations.index',compact('userData'));
 	}
 
 	/**
@@ -17,9 +25,9 @@ class UtilisateurController extends \BaseController {
 	 *
 	 * @return Response
 	 */
-	public function create()
+	public function create($id)
 	{
-		//
+		return View::make('profil.informations.create')->with('id',$id);
 	}
 
 	/**
@@ -29,7 +37,20 @@ class UtilisateurController extends \BaseController {
 	 */
 	public function store()
 	{
-		//
+		$input = Input::all();
+		$validation = Validator::make($input, InformationsPerso::$rules);
+
+		if ($validation->passes())
+		{
+			$this->informationsPerso->create($input);
+
+			return Redirect::route('informationsPersos.index');
+		}
+
+		return Redirect::route('informationsPersos.create')
+		->withInput()
+		->withErrors($validation)
+		->with('message', 'There were validation errors.');
 	}
 
 	/**
@@ -40,7 +61,9 @@ class UtilisateurController extends \BaseController {
 	 */
 	public function show($id)
 	{
-		//
+		$informationsPerso = $this->informationsPerso->findOrFail($id);
+
+		return View::make('informationsPersos.show', compact('informationsPerso'));
 	}
 
 	/**
@@ -51,7 +74,14 @@ class UtilisateurController extends \BaseController {
 	 */
 	public function edit($id)
 	{
-		//
+		$informationsPerso = $this->informationsPerso->find($id);
+
+		if (is_null($informationsPerso))
+		{
+			return Redirect::route('informationsPersos.index');
+		}
+
+		return View::make('informationsPersos.edit', compact('informationsPerso'));
 	}
 
 	/**
@@ -62,7 +92,21 @@ class UtilisateurController extends \BaseController {
 	 */
 	public function update($id)
 	{
-		//
+		$input = array_except(Input::all(), '_method');
+		$validation = Validator::make($input, InformationsPerso::$rules);
+
+		if ($validation->passes())
+		{
+			$informationsPerso = $this->informationsPerso->find($id);
+			$informationsPerso->update($input);
+
+			return Redirect::route('informationsPersos.show', $id);
+		}
+
+		return Redirect::route('informationsPersos.edit', $id)
+		->withInput()
+		->withErrors($validation)
+		->with('message', 'There were validation errors.');
 	}
 
 	/**
@@ -73,7 +117,9 @@ class UtilisateurController extends \BaseController {
 	 */
 	public function destroy($id)
 	{
-		//
+		$this->informationsPerso->find($id)->delete();
+
+		return Redirect::route('informationsPersos.index');
 	}
 
 }

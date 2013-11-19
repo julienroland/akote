@@ -132,8 +132,7 @@ class RechercheController extends BaseController {
 		}
 		else if(Input::get('listKot')!=="null" || empty(Input::get('listKot')))
 		{
-			var_dump('test1');
-			var_dump(json_encode(Input::get('listKot')));
+
 			$kot = json_decode(Input::get('listKot')); //liste des kots
 			
 			Session::put('kotFromGoogle',$kot);
@@ -142,7 +141,6 @@ class RechercheController extends BaseController {
 		}
 		else if(empty($type))
 		{
-			var_dump('test');
 			if(!empty($zone)){
 
 				$kot = Kot::where('region',strtolower($zone))->get();

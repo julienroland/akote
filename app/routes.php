@@ -127,10 +127,11 @@ Route::get('deconnecter',array(
 		'as'=>'profilUser',
 		'uses'=>'ProfilController@accueil'
 		));
-	Route::get('profil/informations',array(
+	/*Route::get('profil/informations',array(
 		'as'=>'informationsProfil',
 		'uses'=>'ProfilController@informations'
-		));
+		));*/
+	Route::resource('profil.informations', 'UtilisateurController');
 	/*Locataire view*/
 	Route::get('profil/recherche_enregistre',array(
 		'as'=>'rechercheEnregistreProfil',
@@ -395,3 +396,5 @@ Route::any('annonce/{id}/valider',array('before'=>'auth',
 /*END valider annonce*/
 
 /*END ANNONCE*/
+
+//Route::resource('informationspersos', 'InformationspersosController');

@@ -42,7 +42,7 @@
                           <li>{{link_to_route('deconnecterUser','Se déconnecter')}}</li>
                           <li>{{link_to_route('profilUser','Profil')}}</li>
                           @else
-                          <li>{{link_to_route('identifierUser','S\'indentifier')}}</li>
+                          <li>{{link_to_route('identifierUser','S\'identifier')}}</li>
 
                           <li>  {{link_to_route('showInscription','S\'inscrire')}}</li>
 

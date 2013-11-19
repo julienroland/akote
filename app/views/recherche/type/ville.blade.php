@@ -6,7 +6,6 @@
 @endif
 {{HTML::link('recherche/rapide/prix','Prix',array('title'=>'Trier en fonction du prix'))}}
 {{HTML::link('recherche/rapide/charge_id','Charges',array('title'=>'Trier en fonction des charges'))}}
-<?php //var_dump($listeKot); ?>
 @if(isset($listeKot))
 @if(!empty($listeKot))
 @foreach($listeKot as $kot)

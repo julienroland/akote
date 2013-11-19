@@ -127,6 +127,26 @@ a:hover, a:focus {
   color: #2d65cc;
 }
 
+.informations {
+  background-color: rgba(20, 100, 30, 0.2);
+  padding: 1em 0.5em;
+  border: 1px solid #ffff33;
+  color: yellow;
+}
+.informations span {
+  display: block;
+}
+
+.error {
+  background-color: rgba(250, 50, 30, 0.2);
+  padding: 1em 0.5em;
+  border: 1px solid #ff3333;
+  color: red;
+}
+.error span {
+  display: block;
+}
+
 p {
   text-align: justify;
   margin-bottom: 1em;

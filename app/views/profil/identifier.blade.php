@@ -1,8 +1,12 @@
 @extends('layout')
 
 @section('container')
-@if(isset($message))
-<p>{{$message}}</p>
+@if(isset($errorMessages))
+<div class="error">
+@foreach($errorMessages->all() as $message)
+<span>{{$message}}</span>
+@endforeach
+</div>
 @endif
 {{Form::open(array('url'=>'identifier'))}}
 

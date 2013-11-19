@@ -8,18 +8,21 @@ class ProfilController extends BaseController
 	
 	public function accueil(){
 
-		Return View::make('profil.profil');
+		return View::make('profil.profil');
 
 	}
 
 	public function informations(){
-
-		Return View::make('profil.informations');
+		$userData = User::where('users.id','=',Session::get('user')['id'])->get();
+		return View::make('profil.informations')->with('userData',$userData);
 	}
 
 	public function monKot(){
-		//$chambre = Chambre::where('locataire_id','=',Session::get('user')['id'])->first(); //faire la relative entre la chambre qui est à mon user et au kot en question.
-		Return View::make('profil.locataire.monKot');
+		$chambre = Chambre::where('locataire_id','=',Session::get('user')['id'])
+			->join('kot','chambres.kot_id','=','kot.id')->get(); //faire la relative entre la chambre qui est à mon user et au kot en question.
+		//$chambre = json_decode( $chambre );
+			
+		return View::make('profil.locataire.monKot')->with('kot',$chambre);
 	}
 
 	public function recherche(){
