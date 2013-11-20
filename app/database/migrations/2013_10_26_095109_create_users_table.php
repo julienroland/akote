@@ -18,7 +18,9 @@ class CreateUsersTable extends Migration {
 			$table->string('nom');
 			$table->string('prenom');
 			$table->string('email');
-			$table->string('motdepasse');
+			$table->string('password');
+			$table->integer('accountType_id');
+			$table->integer('validate');
 			$table->timestamps();
 		});
 	}

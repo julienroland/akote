@@ -128,13 +128,16 @@ a:hover, a:focus {
 }
 
 .informations {
-  background-color: rgba(20, 100, 30, 0.2);
+  background-color: #FEEFB3;
   padding: 1em 0.5em;
-  border: 1px solid #ffff33;
-  color: yellow;
+  border: 1px solid #AF7716;
+  color: #AF7716;
 }
 .informations span {
   display: block;
+}
+.informations:before {
+  content: "!";
 }
 
 .error {
@@ -144,6 +147,16 @@ a:hover, a:focus {
   color: red;
 }
 .error span {
+  display: block;
+}
+
+.ok {
+  background-color: rgba(50, 250, 30, 0.2);
+  padding: 1em 0.5em;
+  border: 1px solid #00b300;
+  color: green;
+}
+.ok span {
   display: block;
 }
 

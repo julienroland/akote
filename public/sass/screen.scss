@@ -56,12 +56,15 @@ a{
 	}
 }
 .informations{
-	background-color:rgba(20,100,30,0.2);
+	background-color:#FEEFB3;
 	padding:1em 0.5em;
-	border:1px solid lighten(yellow,10%);
-	color:yellow;
+	border:1px solid #AF7716;
+	color:#AF7716;
 	span{
 		display:block;
+	}
+	&:before{
+		content:"!";
 	}
 }
 .error{
@@ -69,6 +72,15 @@ a{
 	padding:1em 0.5em;
 	border:1px solid lighten(red,10%);
 	color:red;
+	span{
+		display:block;
+	}
+}
+.ok{
+	background-color:rgba(50,250,30,0.2);
+	padding:1em 0.5em;
+	border:1px solid lighten(green,10%);
+	color:green;
 	span{
 		display:block;
 	}

@@ -18,13 +18,10 @@ Route::get('testModelAnnonce',function(){
 		->get();
 	return $annonce;
 });
-Route::get('testModelUserKot',function(){
-	$kots= Kot::with('user')
-		->join('userHasKots','kot.id','=','userHasKots.kot_id')
-		->join('users','userHasKots.user_id','=','users.id')
-		->where('users.id','=','39')
-		->get();
 
+Route::get('testModelUserKot',function(){
+	$kot= Kot::find(5);
+	dd($kot->user);
 		return $kots;
 	
 });
@@ -132,6 +129,7 @@ Route::get('deconnecter',array(
 		'uses'=>'ProfilController@informations'
 		));*/
 	Route::resource('profil.informations', 'UtilisateurController');
+	Route::resource('profil.messages', 'MessageController');
 	/*Locataire view*/
 	Route::get('profil/recherche_enregistre',array(
 		'as'=>'rechercheEnregistreProfil',
@@ -396,5 +394,3 @@ Route::any('annonce/{id}/valider',array('before'=>'auth',
 /*END valider annonce*/
 
 /*END ANNONCE*/
-
-//Route::resource('informationspersos', 'InformationspersosController');
