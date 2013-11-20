@@ -1,0 +1,81 @@
+@import "functions";
+
+@mixin c( $nNumber ) {
+
+  width: col( $nNumber );
+  margin-left: 0;
+  display:block;
+  float:none; 
+  margin: auto;
+  box-sizing:border-box;
+}
+@mixin cf( $nNumber ) {
+
+  width: col( $nNumber );
+  display:block;
+  float:none;
+  box-sizing:border-box;
+ 
+}
+
+@mixin cl( $nNumber ) {
+
+  width: col( $nNumber );
+  margin-left: gutter();
+  float:left;
+  display:block;
+  box-sizing:border-box;
+ 
+}
+@mixin offsetL( $nNumber ) {
+
+  margin-left: col( $nNumber );
+}
+@mixin offsetR( $nNumber ) {
+
+  margin-right: col( $nNumber );
+}
+@mixin cfl( $nNumber ) {
+
+  width: col( $nNumber );
+  float:left;
+  display:block;
+  box-sizing:border-box;
+ 
+}
+
+@mixin cr( $nNumber ) {
+
+  width: col( $nNumber );
+  margin-left: gutter();
+  float:right;
+  display:block;
+  box-sizing:border-box;
+
+}
+@mixin cfr( $nNumber ) {
+
+  width: col( $nNumber );
+  float:right;
+  display:block;
+  box-sizing:border-box;
+ 
+}
+@mixin clear(){
+ content: "";
+ display: block;
+ height: 0;
+ clear: both;
+ visibility: hidden;
+
+}
+@mixin cc( $nNumber ) {
+  display:block;
+  width: col( $nNumber );
+  margin: auto;
+  text-align: center;
+  float:none;
+  box-sizing:border-box;
+  
+}
+/*l * 100 / 1024*/
